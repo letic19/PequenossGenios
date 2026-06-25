@@ -11,15 +11,13 @@ public class DropZone : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
 
-        if(dropped.name == correctLetter)
+        if (dropped.name == correctLetter)
         {
-            Debug.Log("Acertou!");
-
             gameManager.CorrectAnswer();
         }
         else
         {
-            Debug.Log("Errou!");
+            gameManager.WrongAnswer();
         }
     }
 }

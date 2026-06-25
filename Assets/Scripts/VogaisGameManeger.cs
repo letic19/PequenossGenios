@@ -2,27 +2,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class VogaisGameManager : MonoBehaviour
 {
     [Header("Database")]
-    public WordDatabase database;          // opção A 
+    public WordDatabase database;
 
     [Header("UI")]
-    public Image imagemObjeto;             // Image no Canvas
-    public TextMeshProUGUI textoPalavra;   // TMP para a palavra com lacunas
-    public TextMeshProUGUI textoFeedback;  // TMP para feedback
+    public Image imagemObjeto;
+    public TextMeshProUGUI textoPalavra;
+    public TextMeshProUGUI textoFeedback;
 
     [Header("Config")]
-    public float tempoParaPróximo = 1.2f;
+    public float tempoParaProximo = 1.2f;
     public bool usarAudioAoCompletar = true;
     public AudioClip somAcerto;
     public AudioClip somErro;
-    AudioSource audioSource;
 
-    private string palavraCompleta;        // "BOLA"
-    private char[] palavraComLacunas;      // "B_LA"
-    private bool bloqueado = false;        // evita clique múltiplo enquanto animando
+    private AudioSource audioSource;
+
+    private string palavraCompleta;
+    private char[] palavraComLacunas;
+    private bool bloqueado = false;
+
+    private List<int> palavrasUsadas = new List<int>();
+    private bool moduloFinalizado = false;
 
     void Awake()
     {
@@ -31,80 +36,112 @@ public class VogaisGameManager : MonoBehaviour
 
     void Start()
     {
-        textoFeedback.text = "";
+        if (textoFeedback != null)
+            textoFeedback.text = "";
+
         CarregarNovoObjeto();
     }
 
-    // Carrega aleatoriamente uma palavra do database (checa qual usar)
     public void CarregarNovoObjeto()
     {
-        textoFeedback.text = "";
+        if (moduloFinalizado)
+            return;
+
         bloqueado = false;
 
-        WordData item = null;
+        if (database == null || database.palavras == null || database.palavras.Length == 0)
+        {
+            if (textoPalavra != null)
+                textoPalavra.text = "ERRO: Sem dados";
 
-        if (database != null && database.palavras != null && database.palavras.Length > 0)
-        {
-            item = database.palavras[Random.Range(0, database.palavras.Length)];
-        }
-    
-        else
-        {
-            Debug.LogError("Nenhum database configurado em VogaisGameManager.");
-            textoPalavra.text = "ERRO: Sem dados";
+            Debug.LogError("Nenhum database configurado.");
             return;
         }
 
-        palavraCompleta = item.palavraCompleta.ToUpper().Trim();
-        imagemObjeto.sprite = item.imagem;
+        // Terminou todas as palavras
+        if (palavrasUsadas.Count >= database.palavras.Length)
+        {
+            moduloFinalizado = true;
 
-        // monta lacunas: substitui apenas vogais por '_'
+            if (textoPalavra != null)
+                textoPalavra.text = "🎉 MÓDULO FINALIZADO!";
+
+            if (textoFeedback != null)
+                textoFeedback.text = "";
+
+            if (imagemObjeto != null)
+                imagemObjeto.gameObject.SetActive(false);
+
+            return;
+        }
+
+        int indice;
+
+        do
+        {
+            indice = Random.Range(0, database.palavras.Length);
+        }
+        while (palavrasUsadas.Contains(indice));
+
+        palavrasUsadas.Add(indice);
+
+        WordData item = database.palavras[indice];
+
+        palavraCompleta = item.palavraCompleta.ToUpper().Trim();
+
+        if (imagemObjeto != null)
+            imagemObjeto.sprite = item.imagem;
+
         palavraComLacunas = palavraCompleta.ToCharArray();
+
         for (int i = 0; i < palavraComLacunas.Length; i++)
         {
-            if ("AEIOU".IndexOf(char.ToUpper(palavraComLacunas[i])) >= 0)
+            if ("AEIOU".IndexOf(palavraComLacunas[i]) >= 0)
                 palavraComLacunas[i] = '_';
         }
 
-        textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
+        if (textoPalavra != null)
+            textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
+
+        if (textoFeedback != null)
+            textoFeedback.text = "";
     }
 
-    // formato: adiciona espaço entre letras para ficar mais visível (opcional)
-    string FormatarComEspacos(string s)
+    string FormatarComEspacos(string texto)
     {
-        char[] arr = s.ToCharArray();
-        return string.Join(" ", arr);
+        return string.Join(" ", texto.ToCharArray());
     }
 
-    // chamado pelos botões: passe "A", "E", "I", "O", "U"
     public void EscolherVogal(string letra)
     {
-        if (bloqueado) return;
+        if (bloqueado || moduloFinalizado)
+            return;
+
         letra = letra.ToUpper();
 
         bool acertou = false;
 
         for (int i = 0; i < palavraComLacunas.Length; i++)
         {
-            if (palavraComLacunas[i] == '_' && palavraCompleta[i].ToString() == letra)
+            if (palavraComLacunas[i] == '_' &&
+                palavraCompleta[i].ToString() == letra)
             {
                 palavraComLacunas[i] = letra[0];
                 acertou = true;
             }
         }
 
-        textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
+        if (textoPalavra != null)
+            textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
 
         if (acertou)
         {
-            // feedback positivo
-            textoFeedback.text = "✔ Correto!";
-            if (usarAudioAoCompletar && somAcerto != null)
-            {
-                audioSource.PlayOneShot(somAcerto);
-            }
+            if (textoFeedback != null)
+                textoFeedback.text = "✔ Correto!";
 
-            // se completou palavra, aguarda e carrega próxima
+            if (somAcerto != null && usarAudioAoCompletar)
+                audioSource.PlayOneShot(somAcerto);
+
             if (!new string(palavraComLacunas).Contains("_"))
             {
                 StartCoroutine(EsperarEAvancar());
@@ -112,24 +149,31 @@ public class VogaisGameManager : MonoBehaviour
         }
         else
         {
-            textoFeedback.text = "✖ Tente novamente!";
-            if (usarAudioAoCompletar && somErro != null)
-            {
+            if (textoFeedback != null)
+                textoFeedback.text = "✖ Incorreto!";
+
+            if (somErro != null && usarAudioAoCompletar)
                 audioSource.PlayOneShot(somErro);
-            }
         }
     }
 
     IEnumerator EsperarEAvancar()
     {
         bloqueado = true;
-        yield return new WaitForSeconds(tempoParaPróximo);
+
+        yield return new WaitForSeconds(tempoParaProximo);
+
         CarregarNovoObjeto();
     }
 
-    // Método utilitário para permitir reiniciar externamente
     public void Reiniciar()
     {
+        palavrasUsadas.Clear();
+        moduloFinalizado = false;
+
+        if (imagemObjeto != null)
+            imagemObjeto.gameObject.SetActive(true);
+
         CarregarNovoObjeto();
     }
 }
