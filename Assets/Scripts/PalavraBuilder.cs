@@ -1,19 +1,10 @@
 using UnityEngine;
-using TMPro;
 
 public class PalavraBuilder : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject letterFixedPrefab;
     public GameObject letterSlotPrefab;
-
-    public void Limpar()
-    {
-        foreach (Transform filho in transform)
-        {
-            Destroy(filho.gameObject);
-        }
-    }
 
     public void MontarPalavra(string palavra, VogaisGameManager gameManager)
     {
@@ -27,18 +18,30 @@ public class PalavraBuilder : MonoBehaviour
             {
                 GameObject slot = Instantiate(letterSlotPrefab, transform);
 
-                LetterSlot script = slot.GetComponent<LetterSlot>();
+                Debug.Log("Objeto criado: " + slot.name);
 
-                script.Inicializar(letra.ToString(), gameManager);
+                LetterSlot letterSlot = slot.GetComponent<LetterSlot>();
+
+                Debug.Log("Script encontrado? " + (letterSlot != null));
+
+                letterSlot.Inicializar(letra, gameManager);
             }
             else
             {
                 GameObject letraObj = Instantiate(letterFixedPrefab, transform);
 
-                LetterFixed script = letraObj.GetComponent<LetterFixed>();
+                LetterFixed letraScript = letraObj.GetComponent<LetterFixed>();
 
-                script.DefinirLetra(letra);
+                letraScript.DefinirLetra(letra);
             }
+        }
+    }
+
+    public void Limpar()
+    {
+        foreach (Transform filho in transform)
+        {
+            Destroy(filho.gameObject);
         }
     }
 }

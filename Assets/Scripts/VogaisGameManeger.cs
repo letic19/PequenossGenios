@@ -11,30 +11,23 @@ public class VogaisGameManager : MonoBehaviour
 
     [Header("UI")]
     public Image imagemObjeto;
-    public TextMeshProUGUI textoPalavra;
     public TextMeshProUGUI textoFeedback;
-
     public PalavraBuilder palavraBuilder;
-
-    public Transform palavraContainer;
-
-    public GameObject letterFixedPrefab;
-    public GameObject letterSlotPrefab;
 
     [Header("Config")]
     public float tempoParaProximo = 1.2f;
-    public bool usarAudioAoCompletar = true;
     public AudioClip somAcerto;
     public AudioClip somErro;
 
     private AudioSource audioSource;
 
-    private string palavraCompleta;
-    private char[] palavraComLacunas;
+    private List<int> palavrasUsadas = new List<int>();
+
+    private bool moduloFinalizado = false;
     private bool bloqueado = false;
 
-    private List<int> palavrasUsadas = new List<int>();
-    private bool moduloFinalizado = false;
+    private int totalLacunas;
+    private int lacunasPreenchidas;
 
     void Awake()
     {
@@ -43,9 +36,7 @@ public class VogaisGameManager : MonoBehaviour
 
     void Start()
     {
-        if (textoFeedback != null)
-            textoFeedback.text = "";
-
+        textoFeedback.text = "";
         CarregarNovoObjeto();
     }
 
@@ -55,29 +46,15 @@ public class VogaisGameManager : MonoBehaviour
             return;
 
         bloqueado = false;
+        lacunasPreenchidas = 0;
 
-        if (database == null || database.palavras == null || database.palavras.Length == 0)
-        {
-            if (textoPalavra != null)
-                textoPalavra.text = "ERRO: Sem dados";
-
-            Debug.LogError("Nenhum database configurado.");
-            return;
-        }
-
-        // Terminou todas as palavras
         if (palavrasUsadas.Count >= database.palavras.Length)
         {
             moduloFinalizado = true;
 
-            if (textoPalavra != null)
-                textoPalavra.text = "🎉 MÓDULO FINALIZADO!";
+            textoFeedback.text = "🎉 MÓDULO FINALIZADO!";
 
-            if (textoFeedback != null)
-                textoFeedback.text = "";
-
-            if (imagemObjeto != null)
-                imagemObjeto.gameObject.SetActive(false);
+            imagemObjeto.gameObject.SetActive(false);
 
             return;
         }
@@ -92,80 +69,57 @@ public class VogaisGameManager : MonoBehaviour
 
         palavrasUsadas.Add(indice);
 
-        WordData item = database.palavras[indice];
+        WordData palavra = database.palavras[indice];
 
-        palavraCompleta = item.palavraCompleta.ToUpper().Trim();
-        palavraBuilder.MontarPalavra(palavraCompleta, this);
+        imagemObjeto.sprite = palavra.imagem;
 
-        if (imagemObjeto != null)
-            imagemObjeto.sprite = item.imagem;
+        totalLacunas = ContarVogais(palavra.palavraCompleta);
 
-        palavraComLacunas = palavraCompleta.ToCharArray();
+        palavraBuilder.MontarPalavra(
+            palavra.palavraCompleta.ToUpper(),
+            this
+        );
 
-        for (int i = 0; i < palavraComLacunas.Length; i++)
-        {
-            if ("AEIOU".IndexOf(palavraComLacunas[i]) >= 0)
-                palavraComLacunas[i] = '_';
-        }
-
-        if (textoPalavra != null)
-            textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
-
-        if (textoFeedback != null)
-            textoFeedback.text = "";
+        textoFeedback.text = "";
     }
 
-    string FormatarComEspacos(string texto)
+    int ContarVogais(string palavra)
     {
-        return string.Join(" ", texto.ToCharArray());
+        int total = 0;
+
+        foreach (char letra in palavra.ToUpper())
+        {
+            if ("AEIOU".Contains(letra.ToString()))
+                total++;
+        }
+
+        return total;
     }
 
-    public void EscolherVogal(string letra)
+    public void LetraCorreta()
     {
-        if (bloqueado || moduloFinalizado)
-            return;
+        lacunasPreenchidas++;
 
-        letra = letra.ToUpper();
+        if (somAcerto != null)
+            audioSource.PlayOneShot(somAcerto);
 
-        bool acertou = false;
-
-        for (int i = 0; i < palavraComLacunas.Length; i++)
+        if (lacunasPreenchidas >= totalLacunas)
         {
-            if (palavraComLacunas[i] == '_' &&
-                palavraCompleta[i].ToString() == letra)
-            {
-                palavraComLacunas[i] = letra[0];
-                acertou = true;
-            }
-        }
+            textoFeedback.text = "✔ Correto!";
 
-        if (textoPalavra != null)
-            textoPalavra.text = FormatarComEspacos(new string(palavraComLacunas));
-
-        if (acertou)
-        {
-            if (textoFeedback != null)
-                textoFeedback.text = "✔ Correto!";
-
-            if (somAcerto != null && usarAudioAoCompletar)
-                audioSource.PlayOneShot(somAcerto);
-
-            if (!new string(palavraComLacunas).Contains("_"))
-            {
-                StartCoroutine(EsperarEAvancar());
-            }
-        }
-        else
-        {
-            if (textoFeedback != null)
-                textoFeedback.text = "✖ Incorreto!";
-
-            if (somErro != null && usarAudioAoCompletar)
-                audioSource.PlayOneShot(somErro);
+            StartCoroutine(ProximaPalavra());
         }
     }
 
-    IEnumerator EsperarEAvancar()
+    public void LetraErrada()
+    {
+        textoFeedback.text = "✖ Incorreto!";
+
+        if (somErro != null)
+            audioSource.PlayOneShot(somErro);
+    }
+
+    IEnumerator ProximaPalavra()
     {
         bloqueado = true;
 
@@ -174,35 +128,8 @@ public class VogaisGameManager : MonoBehaviour
         CarregarNovoObjeto();
     }
 
-    public void Reiniciar()
+    public bool PodeJogar()
     {
-        palavrasUsadas.Clear();
-        moduloFinalizado = false;
-
-        if (imagemObjeto != null)
-            imagemObjeto.gameObject.SetActive(true);
-
-        CarregarNovoObjeto();
+        return !bloqueado;
     }
-
-        private int totalLacunas;
-        private int lacunasPreenchidas;
-
-        public void LetraCorreta()
-        {
-            lacunasPreenchidas++;
-
-            if (lacunasPreenchidas >= totalLacunas)
-            {
-                StartCoroutine(EsperarEAvancar());
-            }
-        }
-
-                void LimparPalavra()
-        {
-            foreach (Transform filho in palavraContainer)
-            {
-                Destroy(filho.gameObject);
-            }
-        }
 }

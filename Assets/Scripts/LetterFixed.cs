@@ -3,7 +3,12 @@ using TMPro;
 
 public class LetterFixed : MonoBehaviour
 {
-    public TextMeshProUGUI texto;
+    private TextMeshProUGUI texto;
+
+    void Awake()
+    {
+        texto = GetComponentInChildren<TextMeshProUGUI>();
+    }
 
     public void DefinirLetra(char letra)
     {
