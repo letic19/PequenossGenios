@@ -49,7 +49,16 @@ public class NumeroContagemManager : MonoBehaviour
     [Tooltip("Objeto pai que contém toda a UI/lógica do Parque do Escola Games")]
     public GameObject moduloParque;
 
+    [Header("Tela de Módulo Finalizado")]
+    [Tooltip("Painel que aparece quando o jogador termina o módulo (antes de ir pro parque)")]
+    public GameObject painelModuloFinalizado;
+    [Tooltip("Texto dentro do painel de finalizado (ex: 'MÓDULO FINALIZADO!')")]
+    public TextMeshProUGUI textoModuloFinalizado;
+    [Tooltip("Quanto tempo o painel de finalizado fica na tela antes de seguir pro parque")]
+    public float duracaoTelaFinalizado = 3f;
+
     private int quantidadeCorreta;
+    private GameObject prefabDaRodadaAtual;
     private int acertosAtuais = 0;
     private List<GameObject> objetosNaTela = new List<GameObject>();
     private bool aguardandoProximaRodada = false;
@@ -61,17 +70,45 @@ public class NumeroContagemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Liga o evento de clique de cada botão de número automaticamente,
-    /// usando o índice do botão no array como o valor numérico dele.
+    /// Liga o evento de clique de cada botão de número automaticamente.
+    /// O valor do botão é lido do TEXTO dele (ex: o botão com o texto "6" vale 6),
+    /// então não importa a ordem em que os botões foram arrastados no Inspector.
     /// </summary>
     void ConfigurarBotoes()
     {
         for (int i = 0; i < botoesNumero.Length; i++)
         {
-            int valorDoBotao = i; // 0,1,2...10 — cópia local para evitar bug de closure
-            botoesNumero[i].onClick.RemoveAllListeners();
-            botoesNumero[i].onClick.AddListener(() => VerificarResposta(valorDoBotao));
+            Button botao = botoesNumero[i];
+            int valorDoBotao;
+
+            if (!TentarLerNumeroDoBotao(botao, out valorDoBotao))
+            {
+                Debug.LogError($"Não consegui ler um número no texto do botão '{botao.name}'. " +
+                                $"Confira se o texto dentro dele é só o número (ex: '6'), sem espaços ou outros caracteres.");
+                continue;
+            }
+
+            botao.onClick.RemoveAllListeners();
+            botao.onClick.AddListener(() => VerificarResposta(valorDoBotao));
         }
+    }
+
+    /// <summary>
+    /// Procura um texto (TMP ou UI Text normal) dentro do botão e tenta converter para número.
+    /// </summary>
+    bool TentarLerNumeroDoBotao(Button botao, out int valor)
+    {
+        valor = -1;
+
+        TMP_Text textoTMP = botao.GetComponentInChildren<TMP_Text>();
+        if (textoTMP != null && int.TryParse(textoTMP.text.Trim(), out valor))
+            return true;
+
+        Text textoUI = botao.GetComponentInChildren<Text>();
+        if (textoUI != null && int.TryParse(textoUI.text.Trim(), out valor))
+            return true;
+
+        return false;
     }
 
     /// <summary>
@@ -83,6 +120,12 @@ public class NumeroContagemManager : MonoBehaviour
         LimparObjetos();
 
         quantidadeCorreta = Random.Range(quantidadeMinima, quantidadeMaxima + 1);
+
+        // Sorteia UM tipo de objeto para a rodada inteira (ex: só maçã, ou só estrela)
+        if (objetoPrefabs != null && objetoPrefabs.Length > 0)
+        {
+            prefabDaRodadaAtual = objetoPrefabs[Random.Range(0, objetoPrefabs.Length)];
+        }
 
         for (int i = 0; i < quantidadeCorreta; i++)
         {
@@ -111,7 +154,19 @@ public class NumeroContagemManager : MonoBehaviour
     /// </summary>
     void SpawnObjeto()
     {
-        GameObject prefabEscolhido = objetoPrefabs[Random.Range(0, objetoPrefabs.Length)];
+        if (objetoPrefabs == null || objetoPrefabs.Length == 0)
+        {
+            Debug.LogError("objetoPrefabs está vazio! Arraste os prefabs no Inspector.");
+            return;
+        }
+
+        if (areaDeSpawn == null)
+        {
+            Debug.LogError("areaDeSpawn não foi atribuído no Inspector!");
+            return;
+        }
+
+        GameObject prefabEscolhido = prefabDaRodadaAtual;
 
         Vector2 posicao = Vector2.zero;
         int tentativas = 0;
@@ -153,6 +208,8 @@ public class NumeroContagemManager : MonoBehaviour
         }
 
         novoObjeto.transform.SetAsLastSibling(); // garante que fique na frente do fundo/painel
+
+        Debug.Log($"Objeto criado: {novoObjeto.name} | Posição: {posicao} | Ativo: {novoObjeto.activeInHierarchy} | Pai: {novoObjeto.transform.parent.name}");
 
         objetosNaTela.Add(novoObjeto);
     }
@@ -227,13 +284,25 @@ public class NumeroContagemManager : MonoBehaviour
     IEnumerator IrParaOParque()
     {
         if (textoInstrucao != null)
-            textoInstrucao.text = "Muito bem! Vamos passear no Parque do Escola Games!";
+            textoInstrucao.text = "Muito bem! Você terminou o módulo!";
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
-        // Em vez de trocar de cena, escondemos o módulo de contagem
-        // e mostramos o módulo do parque, dentro da mesma cena.
+        // Esconde o painel de "Acerto!" antes de trocar de tela
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+
+        // Esconde o jogo de contagem e mostra a tela de "Módulo Finalizado"
         if (moduloContagem != null) moduloContagem.SetActive(false);
+
+        if (textoModuloFinalizado != null)
+            textoModuloFinalizado.text = "MÓDULO FINALIZADO!";
+
+        if (painelModuloFinalizado != null) painelModuloFinalizado.SetActive(true);
+
+        yield return new WaitForSeconds(duracaoTelaFinalizado);
+
+        // Depois da tela de finalizado, segue para o parque
+        if (painelModuloFinalizado != null) painelModuloFinalizado.SetActive(false);
         if (moduloParque != null) moduloParque.SetActive(true);
     }
 }
