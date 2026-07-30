@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: fd4f4acb69da009458114c80547ccacd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3434063985826490711
+    second: sol amarelo - pg_0
+  - first:
+      213: -96871132697135011
+    second: sol amarelo - pg_1
+  - first:
+      213: 1428518678919440532
+    second: sol amarelo - pg_2
+  - first:
+      213: 4125414241959762569
+    second: sol amarelo - pg_3
+  - first:
+      213: 1604740009004784252
+    second: sol amarelo - pg_4
+  - first:
+      213: -2155342935777597897
+    second: sol amarelo - pg_5
+  - first:
+      213: 2517836238794340
+    second: sol amarelo - pg_6
+  - first:
+      213: -2170367734793068221
+    second: sol amarelo - pg_7
+  - first:
+      213: -7075593728588896047
+    second: sol amarelo - pg_8
+  - first:
+      213: -7712051350708793460
+    second: sol amarelo - pg_9
+  - first:
+      213: 7500455311574656739
+    second: sol amarelo - pg_10
+  - first:
+      213: -8590266993119728114
+    second: sol amarelo - pg_11
+  - first:
+      213: -5366838508922989069
+    second: sol amarelo - pg_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sol amarelo - pg_0
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 771
+        width: 93
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a699d4dff0c750d0800000000000000
+      internalID: -3434063985826490711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_1
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 827
+        width: 108
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d58f892d738d7aef0800000000000000
+      internalID: -96871132697135011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_2
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 773
+        width: 95
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 498e00c7b2e13d310800000000000000
+      internalID: 1428518678919440532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 667
+        width: 105
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98a595b456a604930800000000000000
+      internalID: 4125414241959762569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_4
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 380
+        width: 440
+        height: 440
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7a5691398e254610800000000000000
+      internalID: 1604740009004784252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_5
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 669
+        width: 106
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73624d7f40fa612e0800000000000000
+      internalID: -2155342935777597897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_6
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 545
+        width: 92
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46ead9e65f1f80000800000000000000
+      internalID: 2517836238794340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_7
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 545
+        width: 93
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 341a0b75b0e41e1e0800000000000000
+      internalID: -2170367734793068221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_8
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 436
+        width: 106
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d82a70fdf07ecd90800000000000000
+      internalID: -7075593728588896047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_9
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 436
+        width: 104
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8f4e6f182a49f490800000000000000
+      internalID: -7712051350708793460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_10
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 323
+        width: 95
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e66914ed58f61860800000000000000
+      internalID: 7500455311574656739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_11
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 282
+        width: 108
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0ee555dead39c880800000000000000
+      internalID: -8590266993119728114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol amarelo - pg_12
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 322
+        width: 94
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f512c49fc82585b0800000000000000
+      internalID: -5366838508922989069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sol amarelo - pg_0: -3434063985826490711
+      sol amarelo - pg_1: -96871132697135011
+      sol amarelo - pg_10: 7500455311574656739
+      sol amarelo - pg_11: -8590266993119728114
+      sol amarelo - pg_12: -5366838508922989069
+      sol amarelo - pg_2: 1428518678919440532
+      sol amarelo - pg_3: 4125414241959762569
+      sol amarelo - pg_4: 1604740009004784252
+      sol amarelo - pg_5: -2155342935777597897
+      sol amarelo - pg_6: 2517836238794340
+      sol amarelo - pg_7: -2170367734793068221
+      sol amarelo - pg_8: -7075593728588896047
+      sol amarelo - pg_9: -7712051350708793460
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
