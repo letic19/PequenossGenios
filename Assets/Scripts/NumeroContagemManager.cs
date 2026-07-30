@@ -23,8 +23,13 @@ public class NumeroContagemManager : MonoBehaviour
     public int quantidadeMinima = 1;
     public int quantidadeMaxima = 10;
 
-    [Tooltip("Distância mínima entre os objetos para não se sobreporem")]
-    public float distanciaMinimaEntreObjetos = 90f;
+    [Header("Distribuição em Grade (evita sobreposição)")]
+    [Tooltip("Quantas colunas a grade invisível de posições terá")]
+    public int colunasDaGrade = 5;
+    [Tooltip("Quantas linhas a grade invisível de posições terá (colunas x linhas deve ser >= quantidadeMaxima)")]
+    public int linhasDaGrade = 2;
+    [Tooltip("Variação aleatória dentro de cada célula, para não ficar tudo em fileiras perfeitas (0 = grade perfeita)")]
+    public float variacaoAleatoriaNaCelula = 15f;
 
     [Header("Botões de Resposta (0 a 10)")]
     public Button[] botoesNumero; // arraste os botões 0-10 na ordem no Inspector
@@ -127,10 +132,7 @@ public class NumeroContagemManager : MonoBehaviour
             prefabDaRodadaAtual = objetoPrefabs[Random.Range(0, objetoPrefabs.Length)];
         }
 
-        for (int i = 0; i < quantidadeCorreta; i++)
-        {
-            SpawnObjeto();
-        }
+        SpawnarObjetosDaRodada();
 
         if (textoInstrucao != null)
             textoInstrucao.text = "Conte quantos objetos aparecem e clique no número certo!";
@@ -139,20 +141,11 @@ public class NumeroContagemManager : MonoBehaviour
         if (painelErro != null) painelErro.SetActive(false);
     }
 
-    void LimparObjetos()
-    {
-        foreach (var obj in objetosNaTela)
-        {
-            if (obj != null) Destroy(obj);
-        }
-        objetosNaTela.Clear();
-    }
-
     /// <summary>
-    /// Instancia um objeto aleatório dentro da área de spawn,
-    /// tentando evitar sobreposição com objetos já colocados.
+    /// Instancia todos os objetos da rodada em células sorteadas de uma grade,
+    /// garantindo que nunca fiquem sobrepostos.
     /// </summary>
-    void SpawnObjeto()
+    void SpawnarObjetosDaRodada()
     {
         if (objetoPrefabs == null || objetoPrefabs.Length == 0)
         {
@@ -166,31 +159,78 @@ public class NumeroContagemManager : MonoBehaviour
             return;
         }
 
-        GameObject prefabEscolhido = prefabDaRodadaAtual;
+        List<Vector2> celulasDisponiveis = GerarCelulasDaGrade();
 
-        Vector2 posicao = Vector2.zero;
-        int tentativas = 0;
-        bool posicaoValida = false;
-
-        while (!posicaoValida && tentativas < 30)
+        // Embaralha as células (Fisher-Yates) para sortear quais vão ser usadas
+        for (int i = celulasDisponiveis.Count - 1; i > 0; i--)
         {
-            posicao = PosicaoAleatoriaNaArea();
-            posicaoValida = true;
-
-            foreach (var obj in objetosNaTela)
-            {
-                if (obj == null) continue;
-                RectTransform rectExistente = obj.GetComponent<RectTransform>();
-                Vector2 posicaoExistente = rectExistente != null ? rectExistente.anchoredPosition : (Vector2)obj.transform.localPosition;
-                float distancia = Vector2.Distance(posicaoExistente, posicao);
-                if (distancia < distanciaMinimaEntreObjetos)
-                {
-                    posicaoValida = false;
-                    break;
-                }
-            }
-            tentativas++;
+            int j = Random.Range(0, i + 1);
+            (celulasDisponiveis[i], celulasDisponiveis[j]) = (celulasDisponiveis[j], celulasDisponiveis[i]);
         }
+
+        int quantidadeAUsar = Mathf.Min(quantidadeCorreta, celulasDisponiveis.Count);
+        if (quantidadeCorreta > celulasDisponiveis.Count)
+        {
+            Debug.LogWarning($"A grade ({colunasDaGrade}x{linhasDaGrade} = {celulasDisponiveis.Count} células) é menor que a quantidade sorteada ({quantidadeCorreta}). Aumente colunasDaGrade/linhasDaGrade.");
+        }
+
+        for (int i = 0; i < quantidadeAUsar; i++)
+        {
+            SpawnObjeto(celulasDisponiveis[i]);
+        }
+    }
+
+    /// <summary>
+    /// Calcula a posição central (anchoredPosition) de cada célula da grade,
+    /// distribuída dentro dos limites do AreaDeSpawn.
+    /// </summary>
+    List<Vector2> GerarCelulasDaGrade()
+    {
+        List<Vector2> celulas = new List<Vector2>();
+
+        float largura = areaDeSpawn.rect.width;
+        float altura = areaDeSpawn.rect.height;
+
+        float larguraCelula = largura / colunasDaGrade;
+        float alturaCelula = altura / linhasDaGrade;
+
+        for (int linha = 0; linha < linhasDaGrade; linha++)
+        {
+            for (int coluna = 0; coluna < colunasDaGrade; coluna++)
+            {
+                // Centro de cada célula, com a grade toda centralizada em (0,0)
+                float x = -largura / 2f + larguraCelula * (coluna + 0.5f);
+                float y = altura / 2f - alturaCelula * (linha + 0.5f);
+                celulas.Add(new Vector2(x, y));
+            }
+        }
+
+        return celulas;
+    }
+
+    void LimparObjetos()
+    {
+        foreach (var obj in objetosNaTela)
+        {
+            if (obj != null) Destroy(obj);
+        }
+        objetosNaTela.Clear();
+    }
+
+    /// <summary>
+    /// Instancia um objeto na posição de célula recebida, com uma pequena
+    /// variação aleatória para não ficar visualmente robótico.
+    /// </summary>
+    void SpawnObjeto(Vector2 posicaoDaCelula)
+    {
+        GameObject prefabEscolhido = prefabDaRodadaAtual;
+        if (prefabEscolhido == null) return;
+
+        Vector2 variacao = new Vector2(
+            Random.Range(-variacaoAleatoriaNaCelula, variacaoAleatoriaNaCelula),
+            Random.Range(-variacaoAleatoriaNaCelula, variacaoAleatoriaNaCelula)
+        );
+        Vector2 posicaoFinal = posicaoDaCelula + variacao;
 
         GameObject novoObjeto = Instantiate(prefabEscolhido, areaDeSpawn);
 
@@ -199,30 +239,17 @@ public class NumeroContagemManager : MonoBehaviour
         {
             // anchoredPosition é o correto para elementos de UI
             // (localPosition só funciona igual quando o anchor está centralizado)
-            rectDoObjeto.anchoredPosition = posicao;
+            rectDoObjeto.anchoredPosition = posicaoFinal;
             rectDoObjeto.localScale = Vector3.one;
         }
         else
         {
-            novoObjeto.transform.localPosition = posicao;
+            novoObjeto.transform.localPosition = posicaoFinal;
         }
 
         novoObjeto.transform.SetAsLastSibling(); // garante que fique na frente do fundo/painel
 
-        Debug.Log($"Objeto criado: {novoObjeto.name} | Posição: {posicao} | Ativo: {novoObjeto.activeInHierarchy} | Pai: {novoObjeto.transform.parent.name}");
-
         objetosNaTela.Add(novoObjeto);
-    }
-
-    Vector2 PosicaoAleatoriaNaArea()
-    {
-        float largura = areaDeSpawn.rect.width;
-        float altura = areaDeSpawn.rect.height;
-
-        float x = Random.Range(-largura / 2f, largura / 2f);
-        float y = Random.Range(-altura / 2f, altura / 2f);
-
-        return new Vector2(x, y);
     }
 
     /// <summary>
@@ -248,7 +275,16 @@ public class NumeroContagemManager : MonoBehaviour
         acertosAtuais++;
 
         if (painelAcerto != null) painelAcerto.SetActive(true);
-        if (audioSource != null && somAcerto != null) audioSource.PlayOneShot(somAcerto);
+
+        if (audioSource != null && somAcerto != null)
+        {
+            audioSource.PlayOneShot(somAcerto);
+            Debug.Log($"Som de acerto tocado: {somAcerto.name} | Volume AudioSource: {audioSource.volume} | Mute: {audioSource.mute} | AudioListener.volume global: {AudioListener.volume}");
+        }
+        else
+        {
+            Debug.LogWarning($"Som de acerto NÃO tocou. audioSource nulo? {audioSource == null} | somAcerto nulo? {somAcerto == null}");
+        }
 
         if (acertosAtuais >= acertosParaVencer)
         {

@@ -14,6 +14,11 @@ public class ColorQuiz : MonoBehaviour
 
     public CorItem[] cores;
 
+    [Header("Áudio")]
+    public AudioSource audioSource;
+    public AudioClip somAcerto;
+    public AudioClip somErro;
+
     private string respostaBotao1;
     private string respostaBotao2;
     private string corCorreta;
@@ -130,9 +135,34 @@ public class ColorQuiz : MonoBehaviour
             feedbackText.text = acertou ? "Correto!" : "Incorreto!";
         }
 
+        TocarSom(acertou);
+
         if (acertou)
         {
             Invoke(nameof(GerarPergunta), 1f);
+        }
+    }
+
+    /// <summary>
+    /// Toca o som de acerto ou erro, se o AudioSource e o clip estiverem configurados.
+    /// </summary>
+    void TocarSom(bool acertou)
+    {
+        if (audioSource == null)
+        {
+            Debug.LogWarning("AudioSource não foi atribuído no Inspector do ColorQuiz.");
+            return;
+        }
+
+        AudioClip clipEscolhido = acertou ? somAcerto : somErro;
+
+        if (clipEscolhido != null)
+        {
+            audioSource.PlayOneShot(clipEscolhido);
+        }
+        else
+        {
+            Debug.LogWarning($"Som de {(acertou ? "acerto" : "erro")} não foi atribuído no Inspector do ColorQuiz.");
         }
     }
 }
