@@ -19,12 +19,22 @@ public class ColorQuiz : MonoBehaviour
     public AudioClip somAcerto;
     public AudioClip somErro;
 
+    [Header("Botão de Reiniciar")]
+    [Tooltip("Botão de reiniciar — fica escondido durante o jogo, só aparece ao finalizar o módulo")]
+    public GameObject botaoReiniciar;
+
+    [Header("Sistema de Estrelas")]
+    [Tooltip("Componente EstrelasUI que mostra o resultado final")]
+    public EstrelasUI telaDeEstrelas;
+
     private string respostaBotao1;
     private string respostaBotao2;
     private string corCorreta;
 
     private List<int> coresUsadas = new List<int>();
     private bool moduloFinalizado = false;
+    private bool acertouSemErrarNestaPergunta = true;
+    private int estrelasConquistadas = 0;
 
     void Awake()
     {
@@ -49,6 +59,9 @@ public class ColorQuiz : MonoBehaviour
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
 
+        if (botaoReiniciar != null)
+            botaoReiniciar.SetActive(false);
+
         GerarPergunta();
     }
 
@@ -71,15 +84,22 @@ public class ColorQuiz : MonoBehaviour
         {
             moduloFinalizado = true;
 
-            feedbackText.gameObject.SetActive(true);
-            feedbackText.text = "PARABÉNS, MÓDULO FINALIZADO!";
+            feedbackText.gameObject.SetActive(false);
 
             corImage.gameObject.SetActive(false);
             botao1.gameObject.SetActive(false);
             botao2.gameObject.SetActive(false);
 
+            if (botaoReiniciar != null)
+                botaoReiniciar.SetActive(true);
+
+            if (telaDeEstrelas != null)
+                telaDeEstrelas.MostrarResultado(estrelasConquistadas, cores.Length);
+
             return;
         }
+
+        acertouSemErrarNestaPergunta = true;
 
         int indexCorreta;
 
@@ -97,12 +117,20 @@ public class ColorQuiz : MonoBehaviour
         corImage.sprite = cores[indexCorreta].imagem;
 
         int indexErrada;
+        int tentativas = 0;
 
         do
         {
             indexErrada = Random.Range(0, cores.Length);
+            tentativas++;
+
+            if (tentativas > 100)
+            {
+                Debug.LogError("Não consegui achar uma cor com nome diferente da correta. Confira se o array 'cores' tem pelo menos 2 nomes diferentes (sem espaços extras).");
+                return;
+            }
         }
-        while (indexErrada == indexCorreta);
+        while (NomesIguais(cores[indexErrada].nome, corCorreta));
 
         bool corretaNoBotao1 = Random.value > 0.5f;
 
@@ -123,8 +151,20 @@ public class ColorQuiz : MonoBehaviour
         texto1.text = respostaBotao1;
         texto2.text = respostaBotao2;
 
+        Debug.Log($"Pergunta gerada — Correta: '{corCorreta}' | Botão1: '{respostaBotao1}' | Botão2: '{respostaBotao2}'");
+
         botao1.onClick.AddListener(() => Responder(respostaBotao1 == corCorreta));
         botao2.onClick.AddListener(() => Responder(respostaBotao2 == corCorreta));
+    }
+
+    /// <summary>
+    /// Compara dois nomes de cor ignorando espaços extras e diferença de maiúsculas/minúsculas,
+    /// pra evitar bugs bobos tipo "Azul " != "azul" fazendo os botões repetirem.
+    /// </summary>
+    bool NomesIguais(string nomeA, string nomeB)
+    {
+        if (nomeA == null || nomeB == null) return nomeA == nomeB;
+        return nomeA.Trim().Equals(nomeB.Trim(), System.StringComparison.OrdinalIgnoreCase);
     }
 
     void Responder(bool acertou)
@@ -139,7 +179,14 @@ public class ColorQuiz : MonoBehaviour
 
         if (acertou)
         {
+            if (acertouSemErrarNestaPergunta)
+                estrelasConquistadas++;
+
             Invoke(nameof(GerarPergunta), 1f);
+        }
+        else
+        {
+            acertouSemErrarNestaPergunta = false;
         }
     }
 
@@ -164,5 +211,35 @@ public class ColorQuiz : MonoBehaviour
         {
             Debug.LogWarning($"Som de {(acertou ? "acerto" : "erro")} não foi atribuído no Inspector do ColorQuiz.");
         }
+    }
+
+    /// <summary>
+    /// Reinicia o módulo do zero: zera as cores já usadas, reativa a imagem
+    /// e os botões, e sorteia a primeira pergunta de novo.
+    /// Ligue essa função ao OnClick do botão "Reiniciar" no Inspector.
+    /// </summary>
+    public void ReiniciarModulo()
+    {
+        CancelInvoke();
+
+        moduloFinalizado = false;
+        coresUsadas.Clear();
+        estrelasConquistadas = 0;
+        acertouSemErrarNestaPergunta = true;
+
+        if (corImage != null) corImage.gameObject.SetActive(true);
+        if (botao1 != null) botao1.gameObject.SetActive(true);
+        if (botao2 != null) botao2.gameObject.SetActive(true);
+
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+
+        if (botaoReiniciar != null)
+            botaoReiniciar.SetActive(false);
+
+        if (telaDeEstrelas != null)
+            telaDeEstrelas.Esconder();
+
+        GerarPergunta();
     }
 }

@@ -54,19 +54,21 @@ public class NumeroContagemManager : MonoBehaviour
     [Tooltip("Objeto pai que contém toda a UI/lógica do Parque do Escola Games")]
     public GameObject moduloParque;
 
-    [Header("Tela de Módulo Finalizado")]
-    [Tooltip("Painel que aparece quando o jogador termina o módulo (antes de ir pro parque)")]
-    public GameObject painelModuloFinalizado;
-    [Tooltip("Texto dentro do painel de finalizado (ex: 'MÓDULO FINALIZADO!')")]
-    public TextMeshProUGUI textoModuloFinalizado;
-    [Tooltip("Quanto tempo o painel de finalizado fica na tela antes de seguir pro parque")]
+    [Header("Tela Final")]
+    [Tooltip("Quanto tempo a tela de estrelas fica visível antes de seguir pro parque")]
     public float duracaoTelaFinalizado = 3f;
+
+    [Header("Sistema de Estrelas")]
+    [Tooltip("Componente EstrelasUI que mostra o resultado final (o botão de reiniciar deve estar DENTRO desse painel, como filho)")]
+    public EstrelasUI telaDeEstrelas;
 
     private int quantidadeCorreta;
     private GameObject prefabDaRodadaAtual;
     private int acertosAtuais = 0;
     private List<GameObject> objetosNaTela = new List<GameObject>();
     private bool aguardandoProximaRodada = false;
+    private bool acertouSemErrarNestaRodada = true;
+    private int estrelasConquistadas = 0;
 
     void Start()
     {
@@ -122,6 +124,7 @@ public class NumeroContagemManager : MonoBehaviour
     void NovaRodada()
     {
         aguardandoProximaRodada = false;
+        acertouSemErrarNestaRodada = true;
         LimparObjetos();
 
         quantidadeCorreta = Random.Range(quantidadeMinima, quantidadeMaxima + 1);
@@ -274,6 +277,9 @@ public class NumeroContagemManager : MonoBehaviour
         aguardandoProximaRodada = true;
         acertosAtuais++;
 
+        if (acertouSemErrarNestaRodada)
+            estrelasConquistadas++;
+
         if (painelAcerto != null) painelAcerto.SetActive(true);
 
         if (audioSource != null && somAcerto != null)
@@ -298,6 +304,8 @@ public class NumeroContagemManager : MonoBehaviour
 
     void ErroResposta()
     {
+        acertouSemErrarNestaRodada = false;
+
         if (painelErro != null) painelErro.SetActive(true);
         if (audioSource != null && somErro != null) audioSource.PlayOneShot(somErro);
 
@@ -327,18 +335,38 @@ public class NumeroContagemManager : MonoBehaviour
         // Esconde o painel de "Acerto!" antes de trocar de tela
         if (painelAcerto != null) painelAcerto.SetActive(false);
 
-        // Esconde o jogo de contagem e mostra a tela de "Módulo Finalizado"
+        // Esconde o jogo de contagem e mostra a tela de estrelas com o resultado.
+        // A tela fica parada aqui até o jogador clicar em "Reiniciar".
         if (moduloContagem != null) moduloContagem.SetActive(false);
 
-        if (textoModuloFinalizado != null)
-            textoModuloFinalizado.text = "MÓDULO FINALIZADO!";
+        if (telaDeEstrelas != null)
+            telaDeEstrelas.MostrarResultado(estrelasConquistadas, acertosParaVencer);
+    }
 
-        if (painelModuloFinalizado != null) painelModuloFinalizado.SetActive(true);
+    /// <summary>
+    /// Reinicia o módulo do zero: zera o progresso, para qualquer coroutine
+    /// em andamento, limpa objetos na tela e sorteia uma rodada nova.
+    /// Ligue essa função ao OnClick do botão "Reiniciar" no Inspector.
+    /// </summary>
+    public void ReiniciarModulo()
+    {
+        StopAllCoroutines();
 
-        yield return new WaitForSeconds(duracaoTelaFinalizado);
+        acertosAtuais = 0;
+        aguardandoProximaRodada = false;
+        estrelasConquistadas = 0;
+        acertouSemErrarNestaRodada = true;
 
-        // Depois da tela de finalizado, segue para o parque
-        if (painelModuloFinalizado != null) painelModuloFinalizado.SetActive(false);
-        if (moduloParque != null) moduloParque.SetActive(true);
+        LimparObjetos();
+
+        if (moduloParque != null) moduloParque.SetActive(false);
+        if (moduloContagem != null) moduloContagem.SetActive(true);
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+        if (painelErro != null) painelErro.SetActive(false);
+
+        if (telaDeEstrelas != null)
+            telaDeEstrelas.Esconder();
+
+        NovaRodada();
     }
 }
