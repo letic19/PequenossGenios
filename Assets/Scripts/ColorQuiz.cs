@@ -38,20 +38,29 @@ public class ColorQuiz : MonoBehaviour
 
     void Awake()
     {
-        if (texto1 == null && botao1 != null)
-            texto1 = botao1.GetComponentInChildren<TMP_Text>();
+        void Awake()
+        {
+            if (corImage != null)
+            {
+                corImage.preserveAspect = true;
+                corImage.type = Image.Type.Simple;
+            }
 
-        if (texto2 == null && botao2 != null)
-            texto2 = botao2.GetComponentInChildren<TMP_Text>();
+            if (texto1 == null && botao1 != null)
+                texto1 = botao1.GetComponentInChildren<TMP_Text>();
 
-        if (texto1 != null)
-            texto1.color = new Color(1f, 0.5f, 0f);
+            if (texto2 == null && botao2 != null)
+                texto2 = botao2.GetComponentInChildren<TMP_Text>();
 
-        if (texto2 != null)
-            texto2.color = new Color(1f, 0.5f, 0f);
+            if (texto1 != null)
+                texto1.color = new Color(1f, 0.5f, 0f);
 
-        if (feedbackText != null)
-            feedbackText.color = Color.white;
+            if (texto2 != null)
+                texto2.color = new Color(1f, 0.5f, 0f);
+
+            if (feedbackText != null)
+                feedbackText.color = Color.white;
+        }
     }
 
     void Start()
