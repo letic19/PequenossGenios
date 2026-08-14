@@ -36,10 +36,8 @@ public class ColorQuiz : MonoBehaviour
     private bool acertouSemErrarNestaPergunta = true;
     private int estrelasConquistadas = 0;
 
-    void Awake()
-    {
-        void Awake()
-        {
+   void Awake()
+     {
             if (corImage != null)
             {
                 corImage.preserveAspect = true;
@@ -60,8 +58,8 @@ public class ColorQuiz : MonoBehaviour
 
             if (feedbackText != null)
                 feedbackText.color = Color.white;
-        }
     }
+  
 
     void Start()
     {
