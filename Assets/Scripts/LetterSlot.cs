@@ -12,28 +12,23 @@ public class LetterSlot : MonoBehaviour, IDropHandler
     private VogaisGameManager gameManager;
 
     void Awake()
-{
-    letterText = GetComponentInChildren<TextMeshProUGUI>(true);
-
-    if (letterText == null)
     {
-        Debug.LogError("Não encontrei o LetterText dentro do prefab LetterSlot.");
+        letterText = GetComponentInChildren<TextMeshProUGUI>(true);
+
+        if (letterText == null)
+        {
+            Debug.LogError("Não encontrei o LetterText dentro do prefab LetterSlot.");
+        }
     }
-}
 
     public void Inicializar(char letra, VogaisGameManager manager)
     {
-        Debug.Log("Inicializando Slot");
-
         letraCorreta = letra.ToString();
         gameManager = manager;
 
-        Debug.Log("LetterText é nulo? " + (letterText == null));
-        Debug.Log("GameManager é nulo? " + (gameManager == null));
-
         letterText.text = "_";
         preenchido = false;
-}
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -52,12 +47,18 @@ public class LetterSlot : MonoBehaviour, IDropHandler
             preenchido = true;
 
             letterText.text = letraCorreta;
-            Debug.Log("Mostrando letra: " + letraCorreta);
 
             item.VoltarAoInicio();
             //item.gameObject.SetActive(false);
 
             gameManager.LetraCorreta();
+        }
+        else
+        {
+            // Letra errada: avisa o GameManager (feedback + conta como erro pra essa palavra)
+            gameManager.LetraErrada();
+
+            item.VoltarAoInicio();
         }
     }
 }

@@ -19,6 +19,14 @@ public class VogaisGameManager : MonoBehaviour
     public AudioClip somAcerto;
     public AudioClip somErro;
 
+    [Header("Botão de Reiniciar")]
+    [Tooltip("Botão de reiniciar — o ideal é ele estar DENTRO do painel de estrelas (TelaDeEstrelas), como filho, pra aparecer/sumir sozinho")]
+    public GameObject botaoReiniciar;
+
+    [Header("Sistema de Estrelas")]
+    [Tooltip("Componente EstrelasUI que mostra o resultado final")]
+    public EstrelasUI telaDeEstrelas;
+
     private AudioSource audioSource;
 
     private List<int> palavrasUsadas = new List<int>();
@@ -29,6 +37,9 @@ public class VogaisGameManager : MonoBehaviour
     private int totalLacunas;
     private int lacunasPreenchidas;
 
+    private bool acertouSemErrarNestaPalavra = true;
+    private int estrelasConquistadas = 0;
+
     void Awake()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -37,6 +48,10 @@ public class VogaisGameManager : MonoBehaviour
     void Start()
     {
         textoFeedback.text = "";
+
+        if (botaoReiniciar != null)
+            botaoReiniciar.SetActive(false);
+
         CarregarNovoObjeto();
     }
 
@@ -47,14 +62,21 @@ public class VogaisGameManager : MonoBehaviour
 
         bloqueado = false;
         lacunasPreenchidas = 0;
+        acertouSemErrarNestaPalavra = true;
 
         if (palavrasUsadas.Count >= database.palavras.Length)
         {
             moduloFinalizado = true;
 
-            textoFeedback.text = "PARABÉNS, MÓDULO FINALIZADO!";
+            textoFeedback.text = "";
 
             imagemObjeto.gameObject.SetActive(false);
+
+            if (botaoReiniciar != null)
+                botaoReiniciar.SetActive(true);
+
+            if (telaDeEstrelas != null)
+                telaDeEstrelas.MostrarResultado(estrelasConquistadas, database.palavras.Length);
 
             return;
         }
@@ -107,6 +129,9 @@ public class VogaisGameManager : MonoBehaviour
         {
             textoFeedback.text = "Correto!";
 
+            if (acertouSemErrarNestaPalavra)
+                estrelasConquistadas++;
+
             StartCoroutine(ProximaPalavra());
         }
     }
@@ -114,6 +139,8 @@ public class VogaisGameManager : MonoBehaviour
     public void LetraErrada()
     {
         textoFeedback.text = "Incorreto!";
+
+        acertouSemErrarNestaPalavra = false;
 
         if (somErro != null)
             audioSource.PlayOneShot(somErro);
@@ -131,5 +158,35 @@ public class VogaisGameManager : MonoBehaviour
     public bool PodeJogar()
     {
         return !bloqueado;
+    }
+
+    /// <summary>
+    /// Reinicia o módulo do zero: zera as palavras usadas e as estrelas,
+    /// reativa a imagem e sorteia a primeira palavra de novo.
+    /// Ligue essa função ao OnClick do botão "Reiniciar" no Inspector.
+    /// </summary>
+    public void ReiniciarModulo()
+    {
+        StopAllCoroutines();
+
+        moduloFinalizado = false;
+        bloqueado = false;
+        palavrasUsadas.Clear();
+        estrelasConquistadas = 0;
+        acertouSemErrarNestaPalavra = true;
+
+        if (imagemObjeto != null)
+            imagemObjeto.gameObject.SetActive(true);
+
+        if (textoFeedback != null)
+            textoFeedback.text = "";
+
+        if (botaoReiniciar != null)
+            botaoReiniciar.SetActive(false);
+
+        if (telaDeEstrelas != null)
+            telaDeEstrelas.Esconder();
+
+        CarregarNovoObjeto();
     }
 }
