@@ -58,15 +58,22 @@ public class VogaisGameManager : MonoBehaviour
     public void CarregarNovoObjeto()
     {
         if (moduloFinalizado)
+        {
+            Debug.Log("CarregarNovoObjeto chamado, mas moduloFinalizado já é true. Ignorando.");
             return;
+        }
 
         bloqueado = false;
         lacunasPreenchidas = 0;
         acertouSemErrarNestaPalavra = true;
 
+        Debug.Log($"CarregarNovoObjeto: palavrasUsadas.Count={palavrasUsadas.Count} / database.palavras.Length={database.palavras.Length}");
+
         if (palavrasUsadas.Count >= database.palavras.Length)
         {
             moduloFinalizado = true;
+
+            Debug.Log("MÓDULO FINALIZADO detectado dentro de CarregarNovoObjeto.");
 
             textoFeedback.text = "";
 
@@ -97,6 +104,8 @@ public class VogaisGameManager : MonoBehaviour
 
         totalLacunas = ContarVogais(palavra.palavraCompleta);
 
+        Debug.Log($"Nova palavra carregada: '{palavra.palavraCompleta}' | totalLacunas (vogais) = {totalLacunas}");
+
         palavraBuilder.MontarPalavra(
             palavra.palavraCompleta.ToUpper(),
             this
@@ -122,11 +131,15 @@ public class VogaisGameManager : MonoBehaviour
     {
         lacunasPreenchidas++;
 
+        Debug.Log($"LetraCorreta() chamado. lacunasPreenchidas={lacunasPreenchidas} / totalLacunas={totalLacunas}");
+
         if (somAcerto != null)
             audioSource.PlayOneShot(somAcerto);
 
         if (lacunasPreenchidas >= totalLacunas)
         {
+            Debug.Log("Palavra completa! Chamando ProximaPalavra...");
+
             textoFeedback.text = "Correto!";
 
             if (acertouSemErrarNestaPalavra)
@@ -167,6 +180,8 @@ public class VogaisGameManager : MonoBehaviour
     /// </summary>
     public void ReiniciarModulo()
     {
+        Debug.Log("ReiniciarModulo() chamado no VogaisGameManager.");
+
         StopAllCoroutines();
 
         moduloFinalizado = false;
@@ -177,6 +192,8 @@ public class VogaisGameManager : MonoBehaviour
 
         if (imagemObjeto != null)
             imagemObjeto.gameObject.SetActive(true);
+        else
+            Debug.LogWarning("imagemObjeto está nulo no ReiniciarModulo.");
 
         if (textoFeedback != null)
             textoFeedback.text = "";
@@ -186,6 +203,13 @@ public class VogaisGameManager : MonoBehaviour
 
         if (telaDeEstrelas != null)
             telaDeEstrelas.Esconder();
+
+        if (palavraBuilder != null)
+            Debug.Log($"palavraBuilder OK. Filhos atuais antes de montar nova palavra: {palavraBuilder.transform.childCount}");
+        else
+            Debug.LogWarning("palavraBuilder está nulo no ReiniciarModulo!");
+
+        Debug.Log($"Chamando CarregarNovoObjeto(). moduloFinalizado={moduloFinalizado}, palavrasUsadas.Count={palavrasUsadas.Count}, database.palavras.Length={(database != null ? database.palavras.Length : -1)}");
 
         CarregarNovoObjeto();
     }

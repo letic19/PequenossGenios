@@ -17,7 +17,7 @@ public class LetterSlot : MonoBehaviour, IDropHandler
 
         if (letterText == null)
         {
-            Debug.LogError("N�o encontrei o LetterText dentro do prefab LetterSlot.");
+            Debug.LogError("Não encontrei o LetterText dentro do prefab LetterSlot.");
         }
     }
 
@@ -33,14 +33,22 @@ public class LetterSlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         if (preenchido)
+        {
+            Debug.Log($"OnDrop ignorado: slot da letra '{letraCorreta}' já estava preenchido.");
             return;
+        }
 
         DragItem item = eventData.pointerDrag.GetComponent<DragItem>();
 
         if (item == null)
+        {
+            Debug.LogWarning("OnDrop: o objeto solto não tem componente DragItem. Ignorando.");
             return;
+        }
 
         string letraArrastada = item.gameObject.name.Replace("(Clone)", "").Trim().ToUpper();
+
+        Debug.Log($"OnDrop no slot '{letraCorreta}': letra arrastada = '{letraArrastada}'");
 
         if (letraArrastada == letraCorreta)
         {
