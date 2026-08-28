@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
 
 public class ColorQuiz : MonoBehaviour
@@ -23,6 +24,14 @@ public class ColorQuiz : MonoBehaviour
     [Tooltip("Botão de reiniciar — fica escondido durante o jogo, só aparece ao finalizar o módulo")]
     public GameObject botaoReiniciar;
 
+    [Header("Painéis de Feedback (iguais aos do módulo de Números)")]
+    [Tooltip("Painel que aparece quando a resposta certa é escolhida")]
+    public GameObject painelAcerto;
+    [Tooltip("Painel que aparece quando a resposta errada é escolhida (some sozinho depois de um tempo)")]
+    public GameObject painelErro;
+    [Tooltip("Quanto tempo os painéis de acerto/erro ficam visíveis antes de sumir")]
+    public float duracaoPainelFeedback = 1f;
+
     [Header("Sistema de Estrelas")]
     [Tooltip("Componente EstrelasUI que mostra o resultado final")]
     public EstrelasUI telaDeEstrelas;
@@ -36,30 +45,23 @@ public class ColorQuiz : MonoBehaviour
     private bool acertouSemErrarNestaPergunta = true;
     private int estrelasConquistadas = 0;
 
-   void Awake()
-     {
-            if (corImage != null)
-            {
-                corImage.preserveAspect = true;
-                corImage.type = Image.Type.Simple;
-            }
+    void Awake()
+    {
+        if (texto1 == null && botao1 != null)
+            texto1 = botao1.GetComponentInChildren<TMP_Text>();
 
-            if (texto1 == null && botao1 != null)
-                texto1 = botao1.GetComponentInChildren<TMP_Text>();
+        if (texto2 == null && botao2 != null)
+            texto2 = botao2.GetComponentInChildren<TMP_Text>();
 
-            if (texto2 == null && botao2 != null)
-                texto2 = botao2.GetComponentInChildren<TMP_Text>();
+        if (texto1 != null)
+            texto1.color = new Color(1f, 0.5f, 0f);
 
-            if (texto1 != null)
-                texto1.color = new Color(1f, 0.5f, 0f);
+        if (texto2 != null)
+            texto2.color = new Color(1f, 0.5f, 0f);
 
-            if (texto2 != null)
-                texto2.color = new Color(1f, 0.5f, 0f);
-
-            if (feedbackText != null)
-                feedbackText.color = Color.white;
+        if (feedbackText != null)
+            feedbackText.color = Color.white;
     }
-  
 
     void Start()
     {
@@ -80,6 +82,9 @@ public class ColorQuiz : MonoBehaviour
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
 
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+        if (painelErro != null) painelErro.SetActive(false);
+
         if (cores == null || cores.Length == 0)
         {
             Debug.LogError("Nenhuma cor configurada!");
@@ -92,6 +97,9 @@ public class ColorQuiz : MonoBehaviour
             moduloFinalizado = true;
 
             feedbackText.gameObject.SetActive(false);
+
+            if (painelAcerto != null) painelAcerto.SetActive(false);
+            if (painelErro != null) painelErro.SetActive(false);
 
             corImage.gameObject.SetActive(false);
             botao1.gameObject.SetActive(false);
@@ -186,6 +194,9 @@ public class ColorQuiz : MonoBehaviour
 
         if (acertou)
         {
+            if (painelAcerto != null)
+                painelAcerto.SetActive(true);
+
             if (acertouSemErrarNestaPergunta)
                 estrelasConquistadas++;
 
@@ -194,7 +205,21 @@ public class ColorQuiz : MonoBehaviour
         else
         {
             acertouSemErrarNestaPergunta = false;
+
+            if (painelErro != null)
+            {
+                painelErro.SetActive(true);
+                StartCoroutine(EsconderPainelErro());
+            }
         }
+    }
+
+    IEnumerator EsconderPainelErro()
+    {
+        yield return new WaitForSeconds(duracaoPainelFeedback);
+
+        if (painelErro != null)
+            painelErro.SetActive(false);
     }
 
     /// <summary>
@@ -240,6 +265,9 @@ public class ColorQuiz : MonoBehaviour
 
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
+
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+        if (painelErro != null) painelErro.SetActive(false);
 
         if (botaoReiniciar != null)
             botaoReiniciar.SetActive(false);

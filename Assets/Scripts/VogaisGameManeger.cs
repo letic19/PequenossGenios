@@ -14,6 +14,14 @@ public class VogaisGameManager : MonoBehaviour
     public TextMeshProUGUI textoFeedback;
     public PalavraBuilder palavraBuilder;
 
+    [Header("Painéis de Feedback (iguais aos do módulo de Números)")]
+    [Tooltip("Painel que aparece quando a palavra inteira é completada corretamente")]
+    public GameObject painelAcerto;
+    [Tooltip("Painel que aparece quando uma letra errada é solta (some sozinho depois de um tempo)")]
+    public GameObject painelErro;
+    [Tooltip("Quanto tempo o painel de erro fica visível antes de sumir sozinho")]
+    public float duracaoPainelErro = 1f;
+
     [Header("Config")]
     public float tempoParaProximo = 1.2f;
     public AudioClip somAcerto;
@@ -66,6 +74,9 @@ public class VogaisGameManager : MonoBehaviour
         bloqueado = false;
         lacunasPreenchidas = 0;
         acertouSemErrarNestaPalavra = true;
+
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+        if (painelErro != null) painelErro.SetActive(false);
 
         Debug.Log($"CarregarNovoObjeto: palavrasUsadas.Count={palavrasUsadas.Count} / database.palavras.Length={database.palavras.Length}");
 
@@ -142,6 +153,9 @@ public class VogaisGameManager : MonoBehaviour
 
             textoFeedback.text = "Correto!";
 
+            if (painelAcerto != null)
+                painelAcerto.SetActive(true);
+
             if (acertouSemErrarNestaPalavra)
                 estrelasConquistadas++;
 
@@ -157,6 +171,20 @@ public class VogaisGameManager : MonoBehaviour
 
         if (somErro != null)
             audioSource.PlayOneShot(somErro);
+
+        if (painelErro != null)
+        {
+            painelErro.SetActive(true);
+            StartCoroutine(EsconderPainelErro());
+        }
+    }
+
+    IEnumerator EsconderPainelErro()
+    {
+        yield return new WaitForSeconds(duracaoPainelErro);
+
+        if (painelErro != null)
+            painelErro.SetActive(false);
     }
 
     IEnumerator ProximaPalavra()
@@ -197,6 +225,9 @@ public class VogaisGameManager : MonoBehaviour
 
         if (textoFeedback != null)
             textoFeedback.text = "";
+
+        if (painelAcerto != null) painelAcerto.SetActive(false);
+        if (painelErro != null) painelErro.SetActive(false);
 
         if (botaoReiniciar != null)
             botaoReiniciar.SetActive(false);
