@@ -1766,7 +1766,7 @@ MonoBehaviour:
   painelErro: {fileID: 428061622}
   audioSource: {fileID: 249288120}
   somAcerto: {fileID: 8300000, guid: ff5e7069ccf0b6a40af643afbdf6dfcb, type: 3}
-  somErro: {fileID: 8300000, guid: fa93663f551d6054faa313a29f5f8b2b, type: 3}
+  somErro: {fileID: 8300000, guid: 87b0affaaf76c0a4f89b5704f4d7dd75, type: 3}
   acertosParaVencer: 5
   moduloContagem: {fileID: 0}
   moduloParque: {fileID: 0}
@@ -9815,7 +9815,7 @@ MonoBehaviour:
     imagem: {fileID: -3434063985826490711, guid: fd4f4acb69da009458114c80547ccacd, type: 3}
   audioSource: {fileID: 1075332976}
   somAcerto: {fileID: 8300000, guid: ff5e7069ccf0b6a40af643afbdf6dfcb, type: 3}
-  somErro: {fileID: 8300000, guid: fa93663f551d6054faa313a29f5f8b2b, type: 3}
+  somErro: {fileID: 8300000, guid: 87b0affaaf76c0a4f89b5704f4d7dd75, type: 3}
   botaoReiniciar: {fileID: 0}
   painelAcerto: {fileID: 911061182}
   painelErro: {fileID: 1941404282}
@@ -14118,7 +14118,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: ef9f9975ff2c66942896b4e3fc282439, type: 3}
+  m_Resource: {fileID: 8300000, guid: ad7e92aaa6f25f04fa2296a9daa8967e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -19127,7 +19127,7 @@ MonoBehaviour:
   duracaoPainelErro: 1
   tempoParaProximo: 1.2
   somAcerto: {fileID: 8300000, guid: ff5e7069ccf0b6a40af643afbdf6dfcb, type: 3}
-  somErro: {fileID: 8300000, guid: fa93663f551d6054faa313a29f5f8b2b, type: 3}
+  somErro: {fileID: 8300000, guid: 87b0affaaf76c0a4f89b5704f4d7dd75, type: 3}
   botaoReiniciar: {fileID: 0}
   telaDeEstrelas: {fileID: 47535167}
 --- !u!1 &2142268220
