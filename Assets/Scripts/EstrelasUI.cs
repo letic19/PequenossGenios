@@ -14,6 +14,7 @@ public class EstrelasUI : MonoBehaviour
 
     [Tooltip("Sprite da estrela preenchida (conquistada)")]
     public Sprite spriteEstrelaPreenchida;
+
     [Tooltip("Sprite da estrela vazia (não conquistada)")]
     public Sprite spriteEstrelaVazia;
 
@@ -23,8 +24,13 @@ public class EstrelasUI : MonoBehaviour
     [Header("Mensagens")]
     [TextArea]
     public string mensagemTodasEstrelas = "Parabéns! Você conseguiu todas as estrelas!";
+
     [TextArea]
     public string mensagemParcial = "Você foi muito bem! Vamos tentar novamente para conseguir mais estrelas?";
+
+    [Header("Som de Finalização")]
+    public AudioSource audioSource;
+    public AudioClip somFinalizacao;
 
     /// <summary>
     /// Mostra o resultado: quantas perguntas o jogador acertou de primeira (sem errar)
@@ -36,6 +42,12 @@ public class EstrelasUI : MonoBehaviour
         Debug.Log($"EstrelasUI.MostrarResultado chamado com acertosDePrimeira={acertosDePrimeira}, totalDePerguntas={totalDePerguntas}. Ativando {gameObject.name}...");
 
         gameObject.SetActive(true);
+
+        // Toca o som de finalização
+        if (audioSource != null && somFinalizacao != null)
+        {
+            audioSource.PlayOneShot(somFinalizacao);
+        }
 
         if (estrelas == null || estrelas.Length == 0)
         {
@@ -53,7 +65,10 @@ public class EstrelasUI : MonoBehaviour
                 Debug.LogWarning($"Elemento {i} do array 'estrelas' está vazio (None) no Inspector.");
                 continue;
             }
-            estrelas[i].sprite = (i < estrelasParaMostrar) ? spriteEstrelaPreenchida : spriteEstrelaVazia;
+
+            estrelas[i].sprite = (i < estrelasParaMostrar)
+                ? spriteEstrelaPreenchida
+                : spriteEstrelaVazia;
         }
 
         if (textoResultado != null)
@@ -76,6 +91,7 @@ public class EstrelasUI : MonoBehaviour
         if (totalDePerguntas <= 0) return 0;
 
         float proporcao = (float)acertosDePrimeira / totalDePerguntas;
+
         int estrelasCalculadas = Mathf.RoundToInt(proporcao * estrelas.Length);
 
         return Mathf.Clamp(estrelasCalculadas, 0, estrelas.Length);
