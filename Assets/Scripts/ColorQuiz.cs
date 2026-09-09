@@ -235,14 +235,16 @@ public class ColorQuiz : MonoBehaviour
 
         AudioClip clipEscolhido = acertou ? somAcerto : somErro;
 
-        if (clipEscolhido != null)
-        {
-            audioSource.PlayOneShot(clipEscolhido);
-        }
-        else
+        if (clipEscolhido == null)
         {
             Debug.LogWarning($"Som de {(acertou ? "acerto" : "erro")} não foi atribuído no Inspector do ColorQuiz.");
+            return;
         }
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.TocarEfeito(audioSource, clipEscolhido);
+        else
+            audioSource.PlayOneShot(clipEscolhido); // fallback caso o AudioManager não exista na cena
     }
 
     /// <summary>

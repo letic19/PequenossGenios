@@ -30,6 +30,11 @@ public class NumeroContagemManager : MonoBehaviour
     public int linhasDaGrade = 2;
     [Tooltip("Variação aleatória dentro de cada célula, para não ficar tudo em fileiras perfeitas (0 = grade perfeita)")]
     public float variacaoAleatoriaNaCelula = 15f;
+    [Tooltip("Tamanho aproximado (largura x altura, em pixels) dos objetos que aparecem na tela. Usado para calcular a variação máxima segura, sem deixar objetos vizinhos se tocarem.")]
+    public Vector2 tamanhoEstimadoDoObjeto = new Vector2(100f, 100f);
+
+    private float larguraCelulaAtual;
+    private float alturaCelulaAtual;
 
     [Header("Botões de Resposta (0 a 10)")]
     public Button[] botoesNumero; // arraste os botões 0-10 na ordem no Inspector
@@ -284,8 +289,10 @@ public class NumeroContagemManager : MonoBehaviour
 
         if (audioSource != null && somAcerto != null)
         {
-            audioSource.PlayOneShot(somAcerto);
-            Debug.Log($"Som de acerto tocado: {somAcerto.name} | Volume AudioSource: {audioSource.volume} | Mute: {audioSource.mute} | AudioListener.volume global: {AudioListener.volume}");
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.TocarEfeito(audioSource, somAcerto);
+            else
+                audioSource.PlayOneShot(somAcerto);
         }
         else
         {
@@ -307,7 +314,13 @@ public class NumeroContagemManager : MonoBehaviour
         acertouSemErrarNestaRodada = false;
 
         if (painelErro != null) painelErro.SetActive(true);
-        if (audioSource != null && somErro != null) audioSource.PlayOneShot(somErro);
+        if (audioSource != null && somErro != null)
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.TocarEfeito(audioSource, somErro);
+            else
+                audioSource.PlayOneShot(somErro);
+        }
 
         StartCoroutine(EsconderPainelErro(1f));
         // Aqui o jogador pode tentar novamente, não avança de rodada

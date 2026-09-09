@@ -145,7 +145,12 @@ public class VogaisGameManager : MonoBehaviour
         Debug.Log($"LetraCorreta() chamado. lacunasPreenchidas={lacunasPreenchidas} / totalLacunas={totalLacunas}");
 
         if (somAcerto != null)
-            audioSource.PlayOneShot(somAcerto);
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.TocarEfeito(audioSource, somAcerto);
+            else
+                audioSource.PlayOneShot(somAcerto);
+        }
 
         if (lacunasPreenchidas >= totalLacunas)
         {
@@ -170,7 +175,12 @@ public class VogaisGameManager : MonoBehaviour
         acertouSemErrarNestaPalavra = false;
 
         if (somErro != null)
-            audioSource.PlayOneShot(somErro);
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.TocarEfeito(audioSource, somErro);
+            else
+                audioSource.PlayOneShot(somErro);
+        }
 
         if (painelErro != null)
         {
