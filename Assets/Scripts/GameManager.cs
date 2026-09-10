@@ -163,8 +163,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.TocarEfeito(audioSource, clipEscolhido);
+        if (ControladorSom.Instance != null)
+            ControladorSom.Instance.TocarEfeito(audioSource, clipEscolhido);
         else
             audioSource.PlayOneShot(clipEscolhido); // fallback caso o AudioManager não exista na cena
     }

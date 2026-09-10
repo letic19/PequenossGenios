@@ -289,8 +289,8 @@ public class NumeroContagemManager : MonoBehaviour
 
         if (audioSource != null && somAcerto != null)
         {
-            if (AudioManager.Instance != null)
-                AudioManager.Instance.TocarEfeito(audioSource, somAcerto);
+            if (ControladorSom.Instance != null)
+                ControladorSom.Instance.TocarEfeito(audioSource, somAcerto);
             else
                 audioSource.PlayOneShot(somAcerto);
         }
@@ -316,8 +316,8 @@ public class NumeroContagemManager : MonoBehaviour
         if (painelErro != null) painelErro.SetActive(true);
         if (audioSource != null && somErro != null)
         {
-            if (AudioManager.Instance != null)
-                AudioManager.Instance.TocarEfeito(audioSource, somErro);
+            if (ControladorSom.Instance != null)
+                ControladorSom.Instance.TocarEfeito(audioSource, somErro);
             else
                 audioSource.PlayOneShot(somErro);
         }

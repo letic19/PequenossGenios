@@ -29,6 +29,20 @@ public class PauseManager : MonoBehaviour
     public GameObject moduloAtual;
     [Tooltip("O painel do menu principal / tela inicial — será mostrado ao clicar em 'Tela Inicial'")]
     public GameObject telaInicial;
+    [Tooltip("Outras telas intermediárias que precisam ser escondidas ao voltar pro início (ex: a tela de 'Módulos'/seleção)")]
+    public GameObject[] outrasTelasParaEsconder;
+
+    [Header("Opções")]
+    [Tooltip("Painel do menu de Opções (com os sliders de música/efeitos, etc)")]
+    public GameObject painelOpcoes;
+    [Tooltip("Slider de volume da música, dentro do painel de pausa")]
+    public Slider sliderMusica;
+    [Tooltip("Slider de volume dos efeitos sonoros, dentro do painel de pausa")]
+    public Slider sliderEfeitos;
+    [Tooltip("Opcional: ícone do botão de mudo, dentro do painel de pausa")]
+    public Image iconeMudo;
+    public Sprite spriteSomLigado;
+    public Sprite spriteSomMutado;
 
     private bool pausado = false;
 
@@ -41,6 +55,9 @@ public class PauseManager : MonoBehaviour
 
         if (painelDePausa != null)
             painelDePausa.SetActive(false);
+
+        if (painelOpcoes != null)
+            painelOpcoes.SetActive(false);
 
         if (botaoDePausa != null)
             botaoDePausa.SetActive(true);
@@ -62,6 +79,8 @@ public class PauseManager : MonoBehaviour
 
         if (botaoDePausa != null)
             botaoDePausa.SetActive(false);
+
+        AtualizarControlesDeAudio();
     }
 
     /// <summary>
@@ -146,5 +165,84 @@ public class PauseManager : MonoBehaviour
     void OnDisable()
     {
         Time.timeScale = 1f;
+    }
+
+    // ---------- Controles de áudio, dentro do painel de pausa ----------
+
+    /// <summary>Ligue ao "On Value Changed (Single)" do Slider de Música do painel de pausa.</summary>
+    public void DefinirVolumeMusica(float volume)
+    {
+        if (ControladorSom.Instance != null)
+            ControladorSom.Instance.VolumeMusical(volume);
+    }
+
+    /// <summary>Ligue ao "On Value Changed (Single)" do Slider de Efeitos do painel de pausa.</summary>
+    public void DefinirVolumeEfeitos(float volume)
+    {
+        if (ControladorSom.Instance != null)
+            ControladorSom.Instance.VolumeEfeito(volume);
+    }
+
+    /// <summary>Ligue ao OnClick do botão de mudo dentro do painel de pausa.</summary>
+    public void AlternarMudo()
+    {
+        if (ControladorSom.Instance == null) return;
+
+        ControladorSom.Instance.LigarDesligarSom();
+        AtualizarIconeMudo();
+    }
+
+    /// <summary>
+    /// Sincroniza os sliders e o ícone de mudo com o estado atual salvo no ControladorSom.
+    /// Chamado automaticamente toda vez que o painel de pausa é aberto.
+    /// </summary>
+    void AtualizarControlesDeAudio()
+    {
+        if (ControladorSom.Instance == null) return;
+
+        if (sliderMusica != null)
+            sliderMusica.SetValueWithoutNotify(ControladorSom.Instance.VolumeMusicaAtual);
+
+        if (sliderEfeitos != null)
+            sliderEfeitos.SetValueWithoutNotify(ControladorSom.Instance.VolumeEfeitoAtual);
+
+        AtualizarIconeMudo();
+    }
+
+    void AtualizarIconeMudo()
+    {
+        if (iconeMudo == null || ControladorSom.Instance == null) return;
+
+        iconeMudo.sprite = ControladorSom.Instance.SomLigado ? spriteSomLigado : spriteSomMutado;
+    }
+
+    // ---------- Navegação dentro da pausa: Opções ----------
+
+    /// <summary>
+    /// Ligue essa função ao OnClick do botão "Opções" dentro do painel de pausa.
+    /// Esconde o painel de pausa e mostra o menu de Opções.
+    /// </summary>
+    public void AbrirOpcoes()
+    {
+        if (painelDePausa != null)
+            painelDePausa.SetActive(false);
+
+        if (painelOpcoes != null)
+            painelOpcoes.SetActive(true);
+
+        AtualizarControlesDeAudio();
+    }
+
+    /// <summary>
+    /// Ligue essa função ao OnClick do botão "Voltar" dentro do painel de Opções.
+    /// Esconde o menu de Opções e volta pro painel de pausa (o jogo continua pausado).
+    /// </summary>
+    public void FecharOpcoes()
+    {
+        if (painelOpcoes != null)
+            painelOpcoes.SetActive(false);
+
+        if (painelDePausa != null)
+            painelDePausa.SetActive(true);
     }
 }
