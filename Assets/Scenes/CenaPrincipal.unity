@@ -454,13 +454,13 @@ MonoBehaviour:
   - {fileID: 1764985197}
   - {fileID: 1140586075}
   spriteEstrelaPreenchida: {fileID: -5645461837649744273, guid: 668312fc200afb5479e7ef4f0690f927, type: 3}
-  spriteEstrelaVazia: {fileID: 2892211256782118405, guid: 1d894c7721dafb545b9f540db3a203b1, type: 3}
+  spriteEstrelaVazia: {fileID: -5645461837649744273, guid: cd5b926b7b9bd1448bd1f190cd5135f2, type: 3}
   textoResultado: {fileID: 238912199}
   mensagemTodasEstrelas: "Parab\xE9ns! Voc\xEA conseguiu todas as estrelas!"
   mensagemParcial: "Voc\xEA foi muito bem! Vamos tentar novamente para conseguir
     mais estrelas?"
   audioSource: {fileID: 47535170}
-  somFinalizacao: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  somFinalizacao: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
 --- !u!114 &47535168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +510,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  m_Resource: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -715,7 +715,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &88302205
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1275,7 +1275,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9960785, g: 0.909804, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1330,8 +1330,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -6902893102903288951, guid: b9b928c7c3cc77e409bb4c2aa871c192, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1366,7 +1366,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 829.9999, y: 415.77496}
-  m_SizeDelta: {x: 160, y: 54.472}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &147059393
 GameObject:
@@ -2423,7 +2423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -2911,7 +2911,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -3539,9 +3539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Menu
-
-'
+  m_text: Modulos
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -4450,8 +4448,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 941.8, y: 447.83978}
-  m_SizeDelta: {x: 160, y: 54.472}
+  m_AnchoredPosition: {x: 866, y: 416}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &341007651
 MonoBehaviour:
@@ -4474,7 +4472,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9960785, g: 0.909804, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4529,8 +4527,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -6902893102903288951, guid: b9b928c7c3cc77e409bb4c2aa871c192, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5775,7 +5773,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4286848281
   m_fontColor: {r: 0.09803922, g: 0.11372549, b: 0.5176471, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -10304,15 +10302,15 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
+  m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286848281
+  m_fontColor: {r: 0.09803922, g: 0.11372549, b: 0.5176471, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10696,7 +10694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 213, y: -118}
+  m_AnchoredPosition: {x: 222, y: -118}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &914857488
@@ -10947,7 +10945,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &926111004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11179,8 +11177,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 765.2991, y: 415.77997}
-  m_SizeDelta: {x: 160, y: 54.472}
+  m_AnchoredPosition: {x: 777, y: 391}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &933559505
 MonoBehaviour:
@@ -11203,7 +11201,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9960785, g: 0.909804, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -11258,8 +11256,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -6902893102903288951, guid: b9b928c7c3cc77e409bb4c2aa871c192, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -12701,8 +12699,6 @@ MonoBehaviour:
   palavras:
   - palavraCompleta: TOMATE
     imagem: {fileID: -2214390756349583788, guid: d24c6ff5572c33b4ab02040a148fa96e, type: 3}
-  - palavraCompleta: PEIXE
-    imagem: {fileID: 4360554642131510768, guid: 3c68212c69b953b4990e41747d7f199a, type: 3}
   - palavraCompleta: BANANA
     imagem: {fileID: 8986141934203794846, guid: f02756666809cf64cab67a904845539a, type: 3}
   - palavraCompleta: ABELHA
@@ -12733,8 +12729,6 @@ MonoBehaviour:
     imagem: {fileID: -5180859795636035718, guid: d2c9da75b2c7cc8439592bfcfe86362b, type: 3}
   - palavraCompleta: OLHO
     imagem: {fileID: -6424074112319187702, guid: cb99348eb9215f1479f5efe976a7bd66, type: 3}
-  - palavraCompleta: IOIO
-    imagem: {fileID: 3304971457762938156, guid: 66231b0078bc883429b30884f7d5c97f, type: 3}
   - palavraCompleta: LUA
     imagem: {fileID: -8466779966103268678, guid: 4bbe0c139cf8f75429a6e5ef58b544b3, type: 3}
   - palavraCompleta: ESPADA
@@ -15613,9 +15607,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Menu
-
-'
+  m_text: Modulos
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -17635,9 +17627,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Menu
-
-'
+  m_text: Modulos
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -18683,7 +18673,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: -5924294935998945012, guid: 3a92bc3141804824c897497444f12a26, type: 2}
@@ -19780,7 +19770,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Erro!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3a92bc3141804824c897497444f12a26, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -19788,7 +19778,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.09803922, g: 0.11372549, b: 0.5176471, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19847,7 +19837,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1692490701
@@ -21311,7 +21301,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 218, y: -101}
-  m_SizeDelta: {x: 148.4848, y: 124.351685}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1822578945
 MonoBehaviour:
@@ -22441,13 +22431,13 @@ MonoBehaviour:
   - {fileID: 891235621}
   - {fileID: 499377694}
   spriteEstrelaPreenchida: {fileID: -5645461837649744273, guid: 668312fc200afb5479e7ef4f0690f927, type: 3}
-  spriteEstrelaVazia: {fileID: 2892211256782118405, guid: 1d894c7721dafb545b9f540db3a203b1, type: 3}
+  spriteEstrelaVazia: {fileID: -5645461837649744273, guid: cd5b926b7b9bd1448bd1f190cd5135f2, type: 3}
   textoResultado: {fileID: 532305446}
   mensagemTodasEstrelas: "Parab\xE9ns! Voc\xEA conseguiu todas as estrelas!"
   mensagemParcial: "Voc\xEA foi muito bem! Vamos tentar novamente para conseguir
     mais estrelas?"
   audioSource: {fileID: 1967502340}
-  somFinalizacao: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  somFinalizacao: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
 --- !u!224 &1967502337
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22523,7 +22513,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  m_Resource: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -25370,13 +25360,13 @@ MonoBehaviour:
   - {fileID: 1607049417}
   - {fileID: 644977392}
   spriteEstrelaPreenchida: {fileID: -5645461837649744273, guid: 668312fc200afb5479e7ef4f0690f927, type: 3}
-  spriteEstrelaVazia: {fileID: 2892211256782118405, guid: 1d894c7721dafb545b9f540db3a203b1, type: 3}
+  spriteEstrelaVazia: {fileID: -5645461837649744273, guid: cd5b926b7b9bd1448bd1f190cd5135f2, type: 3}
   textoResultado: {fileID: 1668130766}
   mensagemTodasEstrelas: "Parab\xE9ns! Voc\xEA conseguiu todas as estrelas!"
   mensagemParcial: "Voc\xEA foi muito bem! Vamos tentar novamente para conseguir
     mais estrelas?"
   audioSource: {fileID: 2146483508}
-  somFinalizacao: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  somFinalizacao: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
 --- !u!224 &2146483505
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25452,7 +25442,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 301880dc4d154554bb9bdd0856c21306, type: 3}
+  m_Resource: {fileID: 8300000, guid: 21271ceef81da9b4191c8ea1b9cdc52c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
