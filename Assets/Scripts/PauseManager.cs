@@ -33,8 +33,8 @@ public class PauseManager : MonoBehaviour
     public GameObject[] outrasTelasParaEsconder;
 
     [Header("Opções")]
-    [Tooltip("Painel do menu de Opções (com os sliders de música/efeitos, etc)")]
-    public GameObject painelOpcoes;
+    [Tooltip("O script OpcoesMenu do painel de Opções COMPARTILHADO (o mesmo que já existe na tela inicial — não crie um novo)")]
+    public OpcoesMenu opcoesMenu;
     [Tooltip("Slider de volume da música, dentro do painel de pausa")]
     public Slider sliderMusica;
     [Tooltip("Slider de volume dos efeitos sonoros, dentro do painel de pausa")]
@@ -55,9 +55,6 @@ public class PauseManager : MonoBehaviour
 
         if (painelDePausa != null)
             painelDePausa.SetActive(false);
-
-        if (painelOpcoes != null)
-            painelOpcoes.SetActive(false);
 
         if (botaoDePausa != null)
             botaoDePausa.SetActive(true);
@@ -220,29 +217,17 @@ public class PauseManager : MonoBehaviour
 
     /// <summary>
     /// Ligue essa função ao OnClick do botão "Opções" dentro do painel de pausa.
-    /// Esconde o painel de pausa e mostra o menu de Opções.
+    /// Abre o MESMO painel de Opções da tela inicial, que sabe voltar pra pausa sozinho.
     /// </summary>
     public void AbrirOpcoes()
     {
-        if (painelDePausa != null)
-            painelDePausa.SetActive(false);
+        if (opcoesMenu == null)
+        {
+            Debug.LogWarning("PauseManager: 'opcoesMenu' não foi atribuído no Inspector.");
+            return;
+        }
 
-        if (painelOpcoes != null)
-            painelOpcoes.SetActive(true);
-
+        opcoesMenu.Abrir(painelDePausa);
         AtualizarControlesDeAudio();
-    }
-
-    /// <summary>
-    /// Ligue essa função ao OnClick do botão "Voltar" dentro do painel de Opções.
-    /// Esconde o menu de Opções e volta pro painel de pausa (o jogo continua pausado).
-    /// </summary>
-    public void FecharOpcoes()
-    {
-        if (painelOpcoes != null)
-            painelOpcoes.SetActive(false);
-
-        if (painelDePausa != null)
-            painelDePausa.SetActive(true);
     }
 }
