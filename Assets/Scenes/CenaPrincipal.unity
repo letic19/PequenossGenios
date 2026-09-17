@@ -421,6 +421,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 709870944}
   - {fileID: 2010696518}
   - {fileID: 1804446033}
   - {fileID: 155459861}
@@ -428,7 +429,6 @@ RectTransform:
   - {fileID: 1140586077}
   - {fileID: 238912201}
   - {fileID: 1669362427}
-  - {fileID: 709870944}
   m_Father: {fileID: 1517773769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -12581,7 +12581,7 @@ MonoBehaviour:
   botao2: {fileID: 1476269657}
   texto1: {fileID: 607586855}
   texto2: {fileID: 567388718}
-  feedbackText: {fileID: 0}
+  feedbackText: {fileID: 1668130766}
   cores:
   - nome: AMARELO
     imagem: {fileID: 8986141934203794846, guid: f02756666809cf64cab67a904845539a, type: 3}
@@ -22854,6 +22854,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1569836551}
   - {fileID: 964685776}
   - {fileID: 999175580}
   - {fileID: 306695629}
@@ -22862,7 +22863,6 @@ RectTransform:
   - {fileID: 532305448}
   - {fileID: 1443977502}
   - {fileID: 753967638}
-  - {fileID: 1569836551}
   m_Father: {fileID: 1517773769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -25807,6 +25807,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1301188131}
   - {fileID: 1840115661}
   - {fileID: 1205988136}
   - {fileID: 1228701187}
@@ -25814,13 +25815,12 @@ RectTransform:
   - {fileID: 644977390}
   - {fileID: 1668130768}
   - {fileID: 638273310}
-  - {fileID: 1301188131}
   m_Father: {fileID: 1517773769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 6.442993, y: 0}
+  m_SizeDelta: {x: 12.887, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2146483506
 MonoBehaviour:
