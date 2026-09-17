@@ -36,6 +36,9 @@ public class ColorQuiz : MonoBehaviour
     [Tooltip("Componente EstrelasUI que mostra o resultado final")]
     public EstrelasUI telaDeEstrelas;
 
+    [Header("Sistema de Progresso")]
+    public ProgressBarUI progresso;
+
     private string respostaBotao1;
     private string respostaBotao2;
     private string corCorreta;
@@ -191,11 +194,13 @@ public class ColorQuiz : MonoBehaviour
         }
 
         TocarSom(acertou);
-
         if (acertou)
         {
             if (painelAcerto != null)
                 painelAcerto.SetActive(true);
+
+            if (progresso != null)
+                progresso.AvancarProgresso();
 
             if (acertouSemErrarNestaPergunta)
                 estrelasConquistadas++;

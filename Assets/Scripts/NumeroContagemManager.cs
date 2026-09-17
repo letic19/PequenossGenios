@@ -67,6 +67,9 @@ public class NumeroContagemManager : MonoBehaviour
     [Tooltip("Componente EstrelasUI que mostra o resultado final (o botão de reiniciar deve estar DENTRO desse painel, como filho)")]
     public EstrelasUI telaDeEstrelas;
 
+    [Header("Sistema de Progresso")]
+    public ProgressBarUI progresso;
+
     private int quantidadeCorreta;
     private GameObject prefabDaRodadaAtual;
     private int acertosAtuais = 0;
@@ -281,6 +284,9 @@ public class NumeroContagemManager : MonoBehaviour
     {
         aguardandoProximaRodada = true;
         acertosAtuais++;
+
+        if (progresso != null)
+            progresso.AvancarProgresso();
 
         if (acertouSemErrarNestaRodada)
             estrelasConquistadas++;
