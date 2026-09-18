@@ -2,11 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Componente reutilizável para mostrar o resultado final de um módulo
-/// como estrelas preenchidas/vazias, junto com uma mensagem.
-/// Use o MESMO script em todos os módulos (Números, Cores, Letras).
-/// </summary>
+
 public class EstrelasUI : MonoBehaviour
 {
     [Header("Estrelas (arraste as 5 imagens de estrela, na ordem)")]
@@ -32,18 +28,14 @@ public class EstrelasUI : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip somFinalizacao;
 
-    /// <summary>
-    /// Mostra o resultado: quantas perguntas o jogador acertou de primeira (sem errar)
-    /// em relação ao total de perguntas do módulo. O número de estrelas exibidas (de 0 a 5)
-    /// é calculado proporcionalmente, mesmo que o módulo tenha mais ou menos que 5 perguntas.
-    /// </summary>
+    
     public void MostrarResultado(int acertosDePrimeira, int totalDePerguntas)
     {
         Debug.Log($"EstrelasUI.MostrarResultado chamado com acertosDePrimeira={acertosDePrimeira}, totalDePerguntas={totalDePerguntas}. Ativando {gameObject.name}...");
 
         gameObject.SetActive(true);
 
-        // Toca o som de finalização
+       
         if (audioSource != null && somFinalizacao != null)
         {
             audioSource.PlayOneShot(somFinalizacao);
@@ -73,9 +65,16 @@ public class EstrelasUI : MonoBehaviour
 
         if (textoResultado != null)
         {
-            textoResultado.text = (estrelasParaMostrar >= estrelas.Length)
-                ? mensagemTodasEstrelas
-                : mensagemParcial;
+            textoResultado.gameObject.SetActive(true);
+
+            if (estrelasParaMostrar == estrelas.Length)
+            {
+                textoResultado.text = mensagemTodasEstrelas;
+            }
+            else
+            {
+                textoResultado.text = mensagemParcial;
+            }
         }
         else
         {
@@ -83,9 +82,7 @@ public class EstrelasUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Converte "acertos de primeira / total de perguntas" numa quantidade de 0 a 5 estrelas.
-    /// </summary>
+    
     int CalcularEstrelas(int acertosDePrimeira, int totalDePerguntas)
     {
         if (totalDePerguntas <= 0) return 0;
@@ -97,9 +94,7 @@ public class EstrelasUI : MonoBehaviour
         return Mathf.Clamp(estrelasCalculadas, 0, estrelas.Length);
     }
 
-    /// <summary>
-    /// Esconde a tela de resultado (chame ao reiniciar o módulo).
-    /// </summary>
+    
     public void Esconder()
     {
         gameObject.SetActive(false);

@@ -232,6 +232,10 @@ public class VogaisGameManager : MonoBehaviour
         bloqueado = false;
         palavrasUsadas.Clear();
         estrelasConquistadas = 0;
+
+        if (progresso != null)
+            progresso.ReiniciarProgresso();
+
         acertouSemErrarNestaPalavra = true;
 
         if (imagemObjeto != null)

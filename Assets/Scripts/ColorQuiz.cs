@@ -259,11 +259,16 @@ public class ColorQuiz : MonoBehaviour
     /// </summary>
     public void ReiniciarModulo()
     {
+       
         CancelInvoke();
 
         moduloFinalizado = false;
         coresUsadas.Clear();
         estrelasConquistadas = 0;
+
+        if (progresso != null)
+            progresso.ReiniciarProgresso();
+
         acertouSemErrarNestaPergunta = true;
 
         if (corImage != null) corImage.gameObject.SetActive(true);

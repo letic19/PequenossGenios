@@ -32,4 +32,10 @@ public class ProgressBarUI : MonoBehaviour
         barra.value = atividadesConcluidas;
         textoProgresso.text = atividadesConcluidas + "/" + totalAtividades;
     }
+
+    public void ReiniciarProgresso()
+    {
+        atividadesConcluidas = 0;
+        AtualizarProgresso();
+    }
 }

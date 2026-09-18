@@ -358,6 +358,9 @@ public class NumeroContagemManager : MonoBehaviour
         estrelasConquistadas = 0;
         acertouSemErrarNestaRodada = true;
 
+        if (progresso != null)
+            progresso.ReiniciarProgresso();
+
         LimparObjetos();
 
         if (moduloParque != null) moduloParque.SetActive(false);
