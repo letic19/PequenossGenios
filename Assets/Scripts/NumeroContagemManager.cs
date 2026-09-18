@@ -4,12 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Módulo "Eu sei contar" (Números)
-/// O jogador vê uma quantidade aleatória de objetos na tela e deve
-/// clicar no número correspondente. Após um número de acertos,
-/// o jogo carrega a cena do Parque do Escola Games (coleta de estrelas).
-/// </summary>
+
 public class NumeroContagemManager : MonoBehaviour
 {
     [Header("Configuração da Rodada")]
@@ -37,7 +32,7 @@ public class NumeroContagemManager : MonoBehaviour
     private float alturaCelulaAtual;
 
     [Header("Botões de Resposta (0 a 10)")]
-    public Button[] botoesNumero; // arraste os botões 0-10 na ordem no Inspector
+    public Button[] botoesNumero; 
 
     [Header("UI de Feedback")]
     public TextMeshProUGUI textoInstrucao;
@@ -74,6 +69,7 @@ public class NumeroContagemManager : MonoBehaviour
     private GameObject prefabDaRodadaAtual;
     private int acertosAtuais = 0;
     private List<GameObject> objetosNaTela = new List<GameObject>();
+    private List<GameObject> objetosDisponiveis = new List<GameObject>();
     private bool aguardandoProximaRodada = false;
     private bool acertouSemErrarNestaRodada = true;
     private int estrelasConquistadas = 0;
@@ -81,14 +77,13 @@ public class NumeroContagemManager : MonoBehaviour
     void Start()
     {
         ConfigurarBotoes();
+        acertosParaVencer = objetoPrefabs.Length;
+        objetosDisponiveis = new List<GameObject>(objetoPrefabs);
+
         NovaRodada();
     }
 
-    /// <summary>
-    /// Liga o evento de clique de cada botão de número automaticamente.
-    /// O valor do botão é lido do TEXTO dele (ex: o botão com o texto "6" vale 6),
-    /// então não importa a ordem em que os botões foram arrastados no Inspector.
-    /// </summary>
+
     void ConfigurarBotoes()
     {
         for (int i = 0; i < botoesNumero.Length; i++)
@@ -126,9 +121,7 @@ public class NumeroContagemManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Limpa a rodada anterior e sorteia uma nova quantidade de objetos.
-    /// </summary>
+    
     void NovaRodada()
     {
         aguardandoProximaRodada = false;
@@ -137,10 +130,13 @@ public class NumeroContagemManager : MonoBehaviour
 
         quantidadeCorreta = Random.Range(quantidadeMinima, quantidadeMaxima + 1);
 
-        // Sorteia UM tipo de objeto para a rodada inteira (ex: só maçã, ou só estrela)
-        if (objetoPrefabs != null && objetoPrefabs.Length > 0)
+        if (objetosDisponiveis.Count > 0)
         {
-            prefabDaRodadaAtual = objetoPrefabs[Random.Range(0, objetoPrefabs.Length)];
+            int indice = Random.Range(0, objetosDisponiveis.Count);
+
+            prefabDaRodadaAtual = objetosDisponiveis[indice];
+
+            objetosDisponiveis.RemoveAt(indice);
         }
 
         SpawnarObjetosDaRodada();
@@ -152,10 +148,7 @@ public class NumeroContagemManager : MonoBehaviour
         if (painelErro != null) painelErro.SetActive(false);
     }
 
-    /// <summary>
-    /// Instancia todos os objetos da rodada em células sorteadas de uma grade,
-    /// garantindo que nunca fiquem sobrepostos.
-    /// </summary>
+    
     void SpawnarObjetosDaRodada()
     {
         if (objetoPrefabs == null || objetoPrefabs.Length == 0)
@@ -172,7 +165,7 @@ public class NumeroContagemManager : MonoBehaviour
 
         List<Vector2> celulasDisponiveis = GerarCelulasDaGrade();
 
-        // Embaralha as células (Fisher-Yates) para sortear quais vão ser usadas
+        
         for (int i = celulasDisponiveis.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
@@ -209,7 +202,6 @@ public class NumeroContagemManager : MonoBehaviour
         {
             for (int coluna = 0; coluna < colunasDaGrade; coluna++)
             {
-                // Centro de cada célula, com a grade toda centralizada em (0,0)
                 float x = -largura / 2f + larguraCelula * (coluna + 0.5f);
                 float y = altura / 2f - alturaCelula * (linha + 0.5f);
                 celulas.Add(new Vector2(x, y));
@@ -228,10 +220,7 @@ public class NumeroContagemManager : MonoBehaviour
         objetosNaTela.Clear();
     }
 
-    /// <summary>
-    /// Instancia um objeto na posição de célula recebida, com uma pequena
-    /// variação aleatória para não ficar visualmente robótico.
-    /// </summary>
+   
     void SpawnObjeto(Vector2 posicaoDaCelula)
     {
         GameObject prefabEscolhido = prefabDaRodadaAtual;
@@ -258,17 +247,15 @@ public class NumeroContagemManager : MonoBehaviour
             novoObjeto.transform.localPosition = posicaoFinal;
         }
 
-        novoObjeto.transform.SetAsLastSibling(); // garante que fique na frente do fundo/painel
+        novoObjeto.transform.SetAsLastSibling(); 
 
         objetosNaTela.Add(novoObjeto);
     }
 
-    /// <summary>
-    /// Chamado quando o jogador clica em um botão de número.
-    /// </summary>
+    
     void VerificarResposta(int numeroEscolhido)
     {
-        if (aguardandoProximaRodada) return; // evita clique duplo durante o feedback
+        if (aguardandoProximaRodada) return; 
 
         if (numeroEscolhido == quantidadeCorreta)
         {
@@ -329,7 +316,7 @@ public class NumeroContagemManager : MonoBehaviour
         }
 
         StartCoroutine(EsconderPainelErro(1f));
-        // Aqui o jogador pode tentar novamente, não avança de rodada
+        
     }
 
     IEnumerator EsconderPainelErro(float segundos)
@@ -351,27 +338,22 @@ public class NumeroContagemManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        // Esconde o painel de "Acerto!" antes de trocar de tela
+        
         if (painelAcerto != null) painelAcerto.SetActive(false);
 
-        // Esconde o jogo de contagem e mostra a tela de estrelas com o resultado.
-        // A tela fica parada aqui até o jogador clicar em "Reiniciar".
+        
         if (moduloContagem != null) moduloContagem.SetActive(false);
 
         if (telaDeEstrelas != null)
             telaDeEstrelas.MostrarResultado(estrelasConquistadas, acertosParaVencer);
     }
 
-    /// <summary>
-    /// Reinicia o módulo do zero: zera o progresso, para qualquer coroutine
-    /// em andamento, limpa objetos na tela e sorteia uma rodada nova.
-    /// Ligue essa função ao OnClick do botão "Reiniciar" no Inspector.
-    /// </summary>
+    
     public void ReiniciarModulo()
     {
         StopAllCoroutines();
 
-        acertosAtuais = 0;
+        objetosDisponiveis = new List<GameObject>(objetoPrefabs);
         aguardandoProximaRodada = false;
         estrelasConquistadas = 0;
         acertouSemErrarNestaRodada = true;

@@ -35,6 +35,9 @@ public class VogaisGameManager : MonoBehaviour
     [Tooltip("Componente EstrelasUI que mostra o resultado final")]
     public EstrelasUI telaDeEstrelas;
 
+    [Header("Sistema de Progresso")]
+    public ProgressBarUI progresso;
+
     private AudioSource audioSource;
 
     private List<int> palavrasUsadas = new List<int>();
@@ -160,6 +163,9 @@ public class VogaisGameManager : MonoBehaviour
 
             if (painelAcerto != null)
                 painelAcerto.SetActive(true);
+
+            if (progresso != null)
+                progresso.AvancarProgresso();
 
             if (acertouSemErrarNestaPalavra)
                 estrelasConquistadas++;

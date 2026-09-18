@@ -1,20 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Sistema de pausa genérico, reutilizável em qualquer módulo (Números, Cores, Letras...).
-/// Coloque este script em UM objeto por módulo (ou um só compartilhado, se os módulos
-/// estiverem sempre na mesma cena e só um ficar ativo por vez).
-///
-/// Como funciona:
-/// - O botão de pausa do módulo chama Pausar().
-/// - O painel de pausa (que você monta na Hierarchy) aparece por cima de tudo,
-///   bloqueando cliques no jogo por trás (contanto que ele cubra a tela toda
-///   e tenha um Image com Raycast Target ligado).
-/// - Time.timeScale = 0 congela qualquer coroutine que use WaitForSeconds
-///   (ex: "próxima pergunta em 1 segundo"), então nada avança escondido atrás do painel.
-/// - O botão "Continuar" dentro do painel de pausa deve chamar Continuar().
-/// </summary>
+
 public class PauseManager : MonoBehaviour
 {
     [Header("UI")]
@@ -48,8 +35,7 @@ public class PauseManager : MonoBehaviour
 
     void OnEnable()
     {
-        // OnEnable roda toda vez que o objeto do módulo é reativado (ex: voltando do menu),
-        // não só na primeira vez — assim o estado de pausa sempre começa limpo.
+        
         pausado = false;
         Time.timeScale = 1f;
 
@@ -80,9 +66,7 @@ public class PauseManager : MonoBehaviour
         AtualizarControlesDeAudio();
     }
 
-    /// <summary>
-    /// Ligue essa função ao OnClick do botão "Continuar" dentro do painel de pausa.
-    /// </summary>
+    
     public void Continuar()
     {
         if (!pausado) return;
@@ -98,9 +82,7 @@ public class PauseManager : MonoBehaviour
             botaoDePausa.SetActive(true);
     }
 
-    /// <summary>
-    /// Alterna entre pausado/despausado — útil se quiser um único botão que funcione como toggle.
-    /// </summary>
+    
     public void AlternarPausa()
     {
         if (pausado)
@@ -114,10 +96,7 @@ public class PauseManager : MonoBehaviour
         return pausado;
     }
 
-    /// <summary>
-    /// Ligue essa função ao OnClick do botão "Ir para Tela Inicial" dentro do painel de pausa.
-    /// Esconde o módulo atual e mostra o menu principal, restaurando o tempo normal do jogo.
-    /// </summary>
+    
     public void IrParaTelaInicial()
     {
         Time.timeScale = 1f;
@@ -140,10 +119,7 @@ public class PauseManager : MonoBehaviour
             Debug.LogWarning("PauseManager: 'telaInicial' não foi atribuído no Inspector — não sei qual tela mostrar.");
     }
 
-    /// <summary>
-    /// Ligue essa função ao OnClick do botão "Sair do Jogo" dentro do painel de pausa.
-    /// Fecha a aplicação. No Editor do Unity, apenas para o modo Play (Application.Quit não funciona lá).
-    /// </summary>
+   
     public void SairDoJogo()
     {
         Time.timeScale = 1f;
@@ -155,32 +131,27 @@ public class PauseManager : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// IMPORTANTE: sempre restaure o timeScale ao sair da cena/módulo,
-    /// senão o jogo continua "pausado" mesmo depois de trocar de tela.
-    /// </summary>
+    
     void OnDisable()
     {
         Time.timeScale = 1f;
     }
 
-    // ---------- Controles de áudio, dentro do painel de pausa ----------
-
-    /// <summary>Ligue ao "On Value Changed (Single)" do Slider de Música do painel de pausa.</summary>
+    
     public void DefinirVolumeMusica(float volume)
     {
         if (ControladorSom.Instance != null)
             ControladorSom.Instance.VolumeMusical(volume);
     }
 
-    /// <summary>Ligue ao "On Value Changed (Single)" do Slider de Efeitos do painel de pausa.</summary>
+    
     public void DefinirVolumeEfeitos(float volume)
     {
         if (ControladorSom.Instance != null)
             ControladorSom.Instance.VolumeEfeito(volume);
     }
 
-    /// <summary>Ligue ao OnClick do botão de mudo dentro do painel de pausa.</summary>
+    
     public void AlternarMudo()
     {
         if (ControladorSom.Instance == null) return;
@@ -189,10 +160,7 @@ public class PauseManager : MonoBehaviour
         AtualizarIconeMudo();
     }
 
-    /// <summary>
-    /// Sincroniza os sliders e o ícone de mudo com o estado atual salvo no ControladorSom.
-    /// Chamado automaticamente toda vez que o painel de pausa é aberto.
-    /// </summary>
+   
     void AtualizarControlesDeAudio()
     {
         if (ControladorSom.Instance == null) return;
@@ -213,12 +181,7 @@ public class PauseManager : MonoBehaviour
         iconeMudo.sprite = ControladorSom.Instance.SomLigado ? spriteSomLigado : spriteSomMutado;
     }
 
-    // ---------- Navegação dentro da pausa: Opções ----------
-
-    /// <summary>
-    /// Ligue essa função ao OnClick do botão "Opções" dentro do painel de pausa.
-    /// Abre o MESMO painel de Opções da tela inicial, que sabe voltar pra pausa sozinho.
-    /// </summary>
+    
     public void AbrirOpcoes()
     {
         if (opcoesMenu == null)
